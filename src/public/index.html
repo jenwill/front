@@ -7,11 +7,16 @@
   <body>
       <h1>Sock It To Me</h1>
       <form id="send-question-form">
+          <label>Type a question</label>
           <input id="question-input" />
           <button type="submit">Send</button>
       </form>
 
       <div id="questions"></div>
+      <div id="player-view">
+         <button id="true" class="answer-button">True</button>
+         <button id="false" class="answer-button">False</button>
+      </div>
   </body>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script src='/js/main.js'></script>
