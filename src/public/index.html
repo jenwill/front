@@ -1,23 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+      <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Sock it to me</title>
+  </head>
+  <body>
+      <div id="root"></div>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
       <meta charset="UTF-8">
       <title>Title</title>
+      <link rel="stylesheet" href="./_index.css">
   </head>
   <body>
       <h1>Sock It To Me</h1>
-      <form id="send-question-form">
+      <form id="send-question-form" class="host-view">
           <label>Type a question</label>
           <input id="question-input" />
           <button type="submit">Send</button>
       </form>
 
       <div id="questions"></div>
-      <div id="player-view">
+
+      <div id="player-game-view" class="player-view">
          <button id="true" class="answer-button">True</button>
          <button id="false" class="answer-button">False</button>
       </div>
+      <div id="player-join-view" class="player-view">
+        <form>
+            <label for="room-code">Enter your room code:</label>
+            <input type="text" id="room-code" placeholder="Room code...">
+            <label for="player-name">Enter your nickname:</label>
+            <input type="text" id="player-name" placeholder="Username...">
+            <button type="button">Generate name for me</button>
+            <button type="submit">Join</button>
+        </form>
+     </div>
   </body>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script src='/js/main.js'></script>
-</html>
+</html> -->
