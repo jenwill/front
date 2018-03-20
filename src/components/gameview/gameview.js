@@ -5,9 +5,11 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 class GameView extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-    this.roomCode = this.props.location.roomCode;
+    console.log('gameview props', this.props);
     this.socket = this.props.location.socket;
+    this.roomCode = this.props.location.roomCode;
+    this.game = this.props.location.game;
+    this.instance = this.props.location.instance;
 
     this.startGame = this.startGame.bind(this);
   }
@@ -17,21 +19,32 @@ class GameView extends Component {
   }
 
   startGame() {
-    // game and quiz are passed in from the choosegame component, which makes a superagent request to get the quiz. It will probably be like let game = this.props.game or something like that, etc.
-    let game = 'truthyfalsy';
-    let quiz = [
-      { 'question': 'React is a JS framework.', 'answer': false },
-      { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-      { 'question': 'JavaScript is single-threaded.', 'answer': true },
-    ];
-    let data = { 'game': game, 'instance': quiz, 'roomCode': this.roomCode };
+    // game and quiz are passed in from the choosegame component, which makes a superagent request to get the quiz.
+    // let game = 'truthyfalsy';
+    // let instance = [
+    //   { 'question': 'React is a JS framework.', 'answer': false },
+    //   { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
+    //   { 'question': 'JavaScript is single-threaded.', 'answer': true },
+    // ];
+    let data = { 'game': this.game, 'instance': this.instance, 'roomCode': this.roomCode };
     this.socket.emit('START_GAME', data);
   }
 
   render() {
     return (
       <Fragment>
-        <h1>GameView {this.props.roomCode}</h1>
+        <h1>{this.game}: [this.instance.name]</h1>
+
+        <div id="game-prompt">Question Goes Here</div>
+
+
+        <div id="game-mobile-view">Mobile View Goes Here</div>
+
+
+        <div id="host-answer-view">Host Answer View</div>
+
+
+        <div id="player-answer-view">Player Answer View</div>
       </Fragment>
     );
   }

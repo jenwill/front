@@ -3,6 +3,8 @@ import {BrowserRouter, Route} from 'react-router-dom';
 
 //NOT DONE-- PLACEHOLDERS BASICALLY NEED TO FINISH -- Dean
 
+// choose game passes in game, instance (quiz), and isHost: true to WaitingRoom
+// the players' version /joinroom will 
 class ChooseGame extends Component {
 
   getQuiz() {
