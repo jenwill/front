@@ -85,7 +85,7 @@ export default class AuthForm extends React.Component {
     return (
       <React.Fragment>
         <h2>Log In</h2>
-        <form id="signin-form" className="landing-form" onSubmit={this.handleRegister}>
+        <form id="signin-form" className="landing-form" onSubmit={this.handleRegister} method="post">
           <label className="landing-label">Username:</label>
           <input
             type="email"
