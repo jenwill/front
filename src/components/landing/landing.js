@@ -1,10 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Landing extends Component {
   constructor(props) {
     super(props);
-    console.log('landing props', this.props.socket);
+    console.log('landing props', this.props);
   }
 
   render() {
@@ -46,4 +47,12 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+let mapStateToProps = state => ({
+  room: state.room,
+  socket: state.socket,
+});
+let mapDispatchToProps = dispatch => ({
+  
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

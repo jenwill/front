@@ -2,13 +2,15 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect, Link } from 'react-router-dom';
 import { renderIf } from '../../lib/utils';
 import WaitingRoom from '../waitingroom/waitingroom';
+import { connect } from 'react-redux';
+import * as roomActions from '../../action/room-action';
 
 // enter the code... emit an event to back end to join the room and redirects to waiting room
 class JoinRoom extends Component {
   constructor(props) {
     super(props);
     console.log('joinroom props', this.props);
-    this.socket = this.props.location.socket;
+    this.socket = this.props.socket;
 
     this.state = {
       code: '',
@@ -41,8 +43,17 @@ class JoinRoom extends Component {
 
     this.socket.on('JOINED_ROOM', (game, instance) => {
       this.setState({'game': game, 'instance': instance});
-      console.log(document.getElementById('joinroom-waitingroom'));
-      (document.getElementById('joinroom-waitingroom')).click();
+
+      this.props.setRoom({
+        game: this.state.game,
+        instance: this.state.instance,
+        roomCode: this.state.code,
+        isHost: false,
+      });
+
+      this.props.setRoom(this.state);
+
+
     });
   }
 
@@ -62,18 +73,25 @@ class JoinRoom extends Component {
 
 
 
-        {/* going to hide this button with CSS */}
-        <Link to={{
+        {/* <Link to={{
           pathname: '/waitingroom',
           socket: this.socket,
           game: this.state.game,
           instance: this.state.instance,
           roomCode: this.state.code,
           isHost: false,
-        }}><button id="joinroom-waitingroom" className="hide" type="button"></button></Link>
+        }}><button id="joinroom-waitingroom" className="hide" type="button"></button></Link> */}
       </Fragment>
     );
   }
 }
 
-export default JoinRoom;
+let mapStateToProps = state => ({
+  room: state.room,
+  socket: state.socket,
+});
+let mapDispatchToProps = dispatch => ({
+  setRoom: room => dispatch(roomActions.roomSet(room)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(JoinRoom);

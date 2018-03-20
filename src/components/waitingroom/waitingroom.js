@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect, Link } from 'react-router-dom';
 import { renderIf } from '../../lib/utils';
 import GameView from '../gameview/gameview';
+import { connect } from 'react-redux';
+
 
 class WaitingRoom extends Component {
   constructor(props) {
@@ -62,4 +64,13 @@ class WaitingRoom extends Component {
   }
 }
 
-export default WaitingRoom;
+
+let mapStateToProps = state => ({
+  room: state.room,
+  socket: state.socket,
+});
+let mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WaitingRoom);
