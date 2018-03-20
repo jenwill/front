@@ -13,35 +13,46 @@ export const tokenDelete = () => {
 };
 
 export const signupRequest = user => dispatch => {
-  return superagent.post(`${__API_URL__}/signup`)
+  return superagent.post(`${__API_URL__}/api/v1/register`)
     .send(user)
     .then(res => {
       dispatch(tokenSet(res.text));
       try {
         localStorage.setItem('token', res.text);
+        localStorage.signInError = false;
+        localStorage.signUpError = false;
       } catch (e) {
         console.log(e);
         throw e;
       }
     })
     .catch(err => {
-      console.error(err);
+      localStorage.signUpError = true;
+      localStorage.signInError = false;
+      console.log('Invalid registration');
+      return 'invalid';
     });
 };
 
 export const signinRequest = user => dispatch => {
-  return superagent.get(`${__API_URL__}/login`)
+  return superagent.get(`${__API_URL__}/api/v1/login`)
     .auth(user.username, user.password)
     .then(res => {
+      console.log('res', res);
       dispatch(tokenSet(res.text));
       try {
         localStorage.setItem('token', res.text);
+        localStorage.signInError = false;
+        localStorage.signUpError = false;
       } catch (e) {
         console.log(e);
         throw e;
       }
     })
     .catch(err => {
-      console.error(err);
+      localStorage.signInError = true;
+      localStorage.signUpError = false;
+      console.log('Invalid login');
+      return 'invalid';
     });
 };
