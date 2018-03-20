@@ -28,11 +28,6 @@ class Landing extends Component {
   }
 
   render() {
-    // let { params } = this.props.match;
-    // let onComplete = params.auth === 'signin'
-    //   ? this.props.signin
-    //   : this.props.signup;
-
     return (
       <Fragment>
         <h1 className="landing-h1">Sock it to me!</h1>

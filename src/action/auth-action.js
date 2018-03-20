@@ -6,7 +6,7 @@ export const tokenSet = token => ({
 });
 
 export const tokenDelete = () => {
-  delete localStorage.token;
+//   delete localStorage.token;
   return {
     type: 'TOKEN_DELETE',
   };
@@ -18,7 +18,7 @@ export const signupRequest = user => dispatch => {
     .then(res => {
       dispatch(tokenSet(res.text));
       try {
-        localStorage.setItem('token', res.text);
+        // localStorage.setItem('token', res.text);
         localStorage.signInError = false;
         localStorage.signUpError = false;
       } catch (e) {
@@ -41,7 +41,7 @@ export const signinRequest = user => dispatch => {
       console.log('res', res);
       dispatch(tokenSet(res.text));
       try {
-        localStorage.setItem('token', res.text);
+        // localStorage.setItem('token', res.text);
         localStorage.signInError = false;
         localStorage.signUpError = false;
       } catch (e) {
