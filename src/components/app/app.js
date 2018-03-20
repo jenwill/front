@@ -22,6 +22,14 @@ class App extends Component {
   componentWillMount() {
     if (this.props.socket)
       store.dispatch({ type: 'SOCKET_SET', payload: this.props.socket });
+
+    if (localStorage.token)
+      store.dispatch({ type: 'TOKEN_SET', payload: localStorage.token });
+  }
+
+  componentDidMount() {
+    localStorage.signInError = false;
+    localStorage.signUpError = false;
   }
 
   render() {
