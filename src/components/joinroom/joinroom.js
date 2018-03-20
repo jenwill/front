@@ -16,16 +16,12 @@ class JoinRoom extends Component {
       code: '',
       nickname: '',
       joinError: '',
-      game: '',
-      instance: '',
+      isHost: false,
+      redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  
-
-  componentWillMount() {
   }
 
   handleChange(e) {
@@ -42,18 +38,20 @@ class JoinRoom extends Component {
     });
 
     this.socket.on('JOINED_ROOM', (game, instance) => {
-      this.setState({'game': game, 'instance': instance});
+      console.log('game, instance', game, instance);
+
+      let code = this.state.code.toUpperCase();
+      let nickname = this.state.nickname.toUpperCase();
 
       this.props.setRoom({
-        game: this.state.game,
-        instance: this.state.instance,
-        roomCode: this.state.code,
+        code: code,
+        nickname: nickname,
         isHost: false,
+        game: game,
+        instance: instance,
       });
 
-      this.props.setRoom(this.state);
-
-
+      this.setState({'redirect': true });
     });
   }
 
@@ -71,16 +69,7 @@ class JoinRoom extends Component {
         </form>
         <div id="joinroom-error">{this.state.joinError}</div>
 
-
-
-        {/* <Link to={{
-          pathname: '/waitingroom',
-          socket: this.socket,
-          game: this.state.game,
-          instance: this.state.instance,
-          roomCode: this.state.code,
-          isHost: false,
-        }}><button id="joinroom-waitingroom" className="hide" type="button"></button></Link> */}
+        {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
       </Fragment>
     );
   }
