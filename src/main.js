@@ -2,11 +2,12 @@ import './styles/_main.scss';
 import React from 'react';
 import ReactDom from 'react-dom';
 import App from './components/app/app.js';
+import io from 'socket.io-client';
+const socket = io(__API_URL__); // eslint-disable-line
 
-ReactDom.render(<App />, document.getElementById('root'));
+ReactDom.render(<App socket={socket} />, document.getElementById('root'));
 
 // const io = require('socket.io').listen(server);
-// const socket = io('http://localhost:3000');
 
 // let sendQuestionForm = document.getElementById('send-question-form');
 // let questionInput = document.getElementById('question-input');
