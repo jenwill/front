@@ -49,11 +49,10 @@ class App extends Component {
               <Fragment>
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />
-                <Route exact path="/waitingroom" component={WaitingRoom} />
-                {/* <Route exact path="/truthyfalsy" component={() => <h1>TRUTHY FALSY PAGE (GAMEPLAY SCREEN)</h1>} /> */}
-                <Route exact path="/createquiz" component={CreateQuiz} />
-                <Route exact path="/joinroom" component={JoinRoom} />
-                <Route exact path="/gameview" component={GameView} />
+                <Route exact path="/waitingroom" component={() => store.getState().socket ? <WaitingRoom /> : <Redirect to="/" />} />
+                <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} />
+                <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
+                <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
               </Fragment>
             </div>
           </BrowserRouter>

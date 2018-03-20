@@ -16,6 +16,7 @@ class WaitingRoom extends Component {
     console.log('waitingroom props', this.props);
     this.state = {
       numPlayers: 0,
+      playerNames: [],
     };
   }
 
@@ -28,19 +29,28 @@ class WaitingRoom extends Component {
       // receiving a room w/code back from back end
       this.socket.on('SEND_ROOM', data => { 
         data = JSON.parse(data);
-        let {roomCode, game} = data;
+        let {roomCode, game, maxPlayers} = data;
 
         this.props.setRoom({
           code: roomCode,
           game: game,
           instance: this.instance,
           isHost: this.isHost,
+          maxPlayers: maxPlayers,
         });
 
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
     else console.log('is not host');
+
+    // update number of players in waiting room
+    this.socket.on('PLAYER_JOINED', (num, names) => {
+      this.setState({ 
+        numPlayers: num, 
+        playerNames: names,
+      });
+    });
   }
 
   render() {
@@ -48,6 +58,9 @@ class WaitingRoom extends Component {
       <Fragment>
         <h1>waiting room: {this.props.room.game}</h1>
 
+        Players in Room: {this.state.numPlayers}<br />
+        Players: {this.state.playerNames.join(', ')}
+        <br />
         {renderIf(this.isHost, <Link to={{
           pathname: '/gameview',
           game: this.game,
@@ -62,7 +75,6 @@ class WaitingRoom extends Component {
     );
   }
 }
-
 
 let mapStateToProps = state => ({
   room: state.room,

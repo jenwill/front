@@ -37,8 +37,8 @@ class JoinRoom extends Component {
       this.setState({'joinError': message});
     });
 
-    this.socket.on('JOINED_ROOM', (game, instance) => {
-      console.log('game, instance', game, instance);
+    this.socket.on('JOINED_ROOM', (game, instance, maxPlayers) => {
+      console.log('game, instance', game, instance, maxPlayers);
 
       let code = this.state.code.toUpperCase();
       let nickname = this.state.nickname.toUpperCase();
@@ -49,6 +49,7 @@ class JoinRoom extends Component {
         isHost: false,
         game: game,
         instance: instance,
+        maxPlayers: maxPlayers,
       });
 
       this.setState({'redirect': true });
