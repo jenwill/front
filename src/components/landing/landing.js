@@ -1,14 +1,25 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Link} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Landing extends Component {
+  constructor(props) {
+    super(props);
+    console.log('landing props', this.props);
+  }
 
   render() {
     return (
       <Fragment>
         <h1 className="landing-h1">Sock it to me!</h1>
         <button type="button" className="landing-button">Log in as host</button>
-        <button type="button" className="landing-button">Join room as player (will log you out as a host)</button>
+
+        <Link to={{
+          pathname: '/joinroom',
+          socket: this.props.socket,
+        }}>
+          <button type="button" className="landing-button">Join room as player (will log you out as a host)</button>
+        </Link>
 
         <h2>Signin</h2>
         <form id="signin-form" className="landing-form">
@@ -36,4 +47,12 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+let mapStateToProps = state => ({
+  room: state.room,
+  socket: state.socket,
+});
+let mapDispatchToProps = dispatch => ({
+  
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);
