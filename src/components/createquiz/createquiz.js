@@ -16,7 +16,9 @@ class CreateQuiz extends Component {
           <input className="createquiz-input" id="createquiz-question" type="text" placeholder="Question"/>
           <label className="createquiz-label">Answer:</label>
           <input className="createquiz-input" id="createquiz-answer" type="text" placeholder="Question"/>
+          <button type="button">Add Question</button>
         </form>
+        {/* <QuizItem/> */}
       </Fragment>
     );
   }
