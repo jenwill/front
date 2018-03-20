@@ -3,21 +3,20 @@ import { BrowserRouter, Route, Redirect, Link } from 'react-router-dom';
 import { renderIf } from '../../lib/utils';
 import GameView from '../gameview/gameview';
 import { connect } from 'react-redux';
-
+import * as roomActions from '../../action/room-action';
 
 class WaitingRoom extends Component {
   constructor(props) {
     super(props);
     this.socket = this.props.socket;
-    // this.game = this.props.game;
-    // this.instance = this.props.instance;
-    // this.isHost = this.props.isHost
+    this.game = this.props.room.game;
+    this.instance = this.props.room.instance;
+    this.isHost = this.props.room.isHost;
+
     console.log('waitingroom props', this.props);
-    this.isHost = true;
     this.state = {
-      game: null,
-      roomCode: null,
       numPlayers: 0,
+      playerNames: [],
     };
   }
 
@@ -25,36 +24,49 @@ class WaitingRoom extends Component {
     // if isHost is true
     if (this.isHost) {
       // creating a room
-      let game = 'truthyfalsy';
-      let instance = [
-        { 'question': 'React is a JS framework.', 'answer': false },
-        { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-        { 'question': 'JavaScript is single-threaded.', 'answer': true },
-      ];
-      this.socket.emit('CREATE_ROOM', game, instance); 
+      this.socket.emit('CREATE_ROOM', this.game, this.instance); 
 
       // receiving a room w/code back from back end
       this.socket.on('SEND_ROOM', data => { 
         data = JSON.parse(data);
-        let {roomCode, game} = data;
-        this.setState({'roomCode': roomCode, 'game': game});
-        console.log('__ROOM_CODE__', this.state.roomCode);
+        let {roomCode, game, maxPlayers} = data;
+
+        this.props.setRoom({
+          code: roomCode,
+          game: game,
+          instance: this.instance,
+          isHost: this.isHost,
+          maxPlayers: maxPlayers,
+        });
+
+        console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
     else console.log('is not host');
+
+    // update number of players in waiting room
+    this.socket.on('PLAYER_JOINED', (num, names) => {
+      this.setState({ 
+        numPlayers: num, 
+        playerNames: names,
+      });
+    });
   }
 
   render() {
     return (
       <Fragment>
-        <h1>waiting room: {this.state.game}</h1>
+        <h1>waiting room: {this.props.room.game}</h1>
 
+        Players in Room: {this.state.numPlayers}<br />
+        Players: {this.state.playerNames.join(', ')}
+        <br />
         {renderIf(this.isHost, <Link to={{
           pathname: '/gameview',
-          game: this.state.game,
-          //   instance: this.instance,
+          game: this.game,
+          instance: this.instance,
           isHost: this.isHost,
-          roomCode: this.state.roomCode,
+          roomCode: this.props.room.code,
           socket: this.socket,
         }}>
           <button type="button" className="startgame-button" id="start-game">Start Game</button>
@@ -64,13 +76,12 @@ class WaitingRoom extends Component {
   }
 }
 
-
 let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
 });
 let mapDispatchToProps = dispatch => ({
-
+  setRoom: room => dispatch(roomActions.roomSet(room)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingRoom);

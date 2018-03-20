@@ -14,7 +14,7 @@ class GameView extends Component {
     this.startGame = this.startGame.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.startGame();
   }
 

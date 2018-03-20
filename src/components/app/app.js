@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from '../../lib/store';
 
@@ -19,17 +19,13 @@ class App extends Component {
     this.state = { socket: this.props.socket };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.socket)
       store.dispatch({ type: 'SOCKET_SET', payload: this.props.socket });
-
-    // if (localStorage.token)
-    //   store.dispatch({ type: 'TOKEN_SET', payload: localStorage.token });
-  }
-
-  componentDidMount() {
     localStorage.signInError = false;
     localStorage.signUpError = false;
+    // if (localStorage.token)
+    //   store.dispatch({ type: 'TOKEN_SET', payload: localStorage.token });
   }
 
   render() {
@@ -52,12 +48,11 @@ class App extends Component {
             <div className="app">
               <Fragment>
                 <Route exact path="/" component={Landing} />
-                <Route exact path="/choosegame" component={ChooseGame} />
-                <Route exact path="/waitingroom" component={WaitingRoom} />
-                {/* <Route exact path="/truthyfalsy" component={() => <h1>TRUTHY FALSY PAGE (GAMEPLAY SCREEN)</h1>} /> */}
-                <Route exact path="/createquiz" component={CreateQuiz} />
-                <Route exact path="/joinroom" component={JoinRoom} />
-                <Route exact path="/gameview" component={GameView} />
+                <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />
+                <Route exact path="/waitingroom" component={() => store.getState().socket ? <WaitingRoom /> : <Redirect to="/" />} />
+                <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} />
+                <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
+                <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
               </Fragment>
             </div>
           </BrowserRouter>
@@ -66,5 +61,12 @@ class App extends Component {
     );
   }
 }
+
+
+<Route exact path="/dashboard" component={() =>
+  store.getState().token
+    ? <Dashboard token={token} />
+    : <Redirect to="/welcome/signin" />}
+/>;
 
 export default App;
