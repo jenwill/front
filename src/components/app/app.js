@@ -10,6 +10,7 @@ import CreateQuiz from '../createquiz/createquiz';
 import WaitingRoom from '../waitingroom/waitingroom';
 import GameView from '../gameview/gameview';
 import JoinRoom from '../joinroom/joinroom';
+import Disconnected from '../errorview/disconnected';
 
 const store = createStore();
 
@@ -41,6 +42,7 @@ class App extends Component {
                 <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} />
                 <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
                 <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
+                <Route exact path="/error/disconnected" component={<Disconnected />} />
               </Fragment>
             </div>
           </BrowserRouter>
@@ -49,12 +51,5 @@ class App extends Component {
     );
   }
 }
-
-
-<Route exact path="/dashboard" component={() =>
-  store.getState().token
-    ? <Dashboard token={token} />
-    : <Redirect to="/welcome/signin" />}
-/>;
 
 export default App;

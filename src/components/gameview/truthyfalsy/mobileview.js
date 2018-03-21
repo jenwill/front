@@ -9,12 +9,19 @@ class TruthyFalsyMobileView extends Component {
     super(props);
     console.log('truthyfalsy mobileview props', this.props);
     this.socket = this.props.socket;
+    this.instance = this.props.room.instance;
+    this.answer = '';
 
     this.state = {
       questionAnswered: false,
     };
 
     this.handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
+  }
+
+  componentWillUnMount() {
+    if (!this.state.questionAnswered)
+      this.socket.emit('SEND_ANSWER', null, this.socket.id);
   }
   
   handleSubmitAnswer(e) {
@@ -23,13 +30,14 @@ class TruthyFalsyMobileView extends Component {
     });
 
     console.log('handleSubmitAnswer', e.target.value);
+    this.answer = e.target.value;
+
+    this.socket.emit('SEND_ANSWER', this.answer, this.socket.id);
   }
 
   render() {
     return (
       <Fragment>
-        <h1>{this.game}: {this.instance.name}</h1>
-
         {renderIf(!this.state.questionAnswered, 
           <div id="mobile-question-view">
             <button type="button" id="true" value="true" onClick={this.handleSubmitAnswer}>true</button>
@@ -47,7 +55,7 @@ class TruthyFalsyMobileView extends Component {
 }
 
 let mapStateToProps = state => ({
-//   room: state.room,
+  room: state.room,
   socket: state.socket,
 });
 

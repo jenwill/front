@@ -4,6 +4,7 @@ import { renderIf } from '../../lib/utils';
 import GameView from '../gameview/gameview';
 import { connect } from 'react-redux';
 import * as roomActions from '../../action/room-action';
+import * as socketActions from '../../action/socket-action';
 
 class WaitingRoom extends Component {
   constructor(props) {
@@ -40,6 +41,11 @@ class WaitingRoom extends Component {
           maxPlayers: maxPlayers,
         });
 
+        this.socket.room = roomCode;
+        let socket = this.socket;
+
+        this.props.setSocket(socket);
+
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
@@ -75,11 +81,11 @@ class WaitingRoom extends Component {
         <br />
         {renderIf(this.isHost && this.state.numPlayers > 0, <Link to={{
           pathname: '/gameview',
-          socket: this.socket,
-          game: this.game,
-          instance: this.instance,
-          isHost: this.isHost,
-          roomCode: this.props.room.code,
+          // socket: this.socket,
+          // game: this.game,
+          // instance: this.instance,
+          // isHost: this.isHost,
+          // roomCode: this.props.room.code,
         }}>
           <button type="button" className="startgame-button" id="start-game">Start Game</button>
         </Link>)}
@@ -96,6 +102,7 @@ let mapStateToProps = state => ({
 });
 let mapDispatchToProps = dispatch => ({
   setRoom: room => dispatch(roomActions.roomSet(room)),
+  setSocket: socket => dispatch(socketActions.socketSet(socket)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingRoom);

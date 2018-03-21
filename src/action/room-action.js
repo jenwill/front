@@ -4,7 +4,6 @@ export const roomSet = room => ({
 });
 
 export const roomDelete = () => {
-  delete localStorage.room;
   return {
     type: 'ROOM_DELETE',
   };
