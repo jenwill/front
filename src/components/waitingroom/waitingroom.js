@@ -19,6 +19,7 @@ class WaitingRoom extends Component {
       numPlayers: 0,
       playerNames: [],
       redirectToGameView: false,
+      redirectToErrorView: false,
     };
   }
 
@@ -31,7 +32,7 @@ class WaitingRoom extends Component {
       // receiving a room w/code back from back end
       this.socket.on('SEND_ROOM', data => { 
         data = JSON.parse(data);
-        let {roomCode, game, maxPlayers} = data;
+        let {roomCode, game, maxPlayers, roomHost} = data;
 
         this.props.setRoom({
           code: roomCode,
@@ -39,6 +40,7 @@ class WaitingRoom extends Component {
           instance: this.instance,
           isHost: this.isHost,
           maxPlayers: maxPlayers,
+          roomHost: roomHost,
         });
 
         this.socket.room = roomCode;
@@ -63,11 +65,16 @@ class WaitingRoom extends Component {
     this.socket.on('REDIRECT', path => {
       this.setState({ redirectToGameView: true });
     });
+
+    // if the host disconnects, redirects to errorview
+    this.socket.on('REDIRECT_DISCONNECT', () => {
+      this.setState({ redirectToErrorView: true });
+    });
   }
 
-  componentWillUnmount() {
-    this.socket.emit('LEAVE_ROOM', this.props.room.code);
-  }
+  // componentWillUnmount() {
+  //   this.socket.emit('LEAVE_ROOM', this.props.room.code);
+  // }
 
   render() {
     return (
@@ -91,6 +98,7 @@ class WaitingRoom extends Component {
         </Link>)}
 
         {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
+        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
       </Fragment>
     );
   }

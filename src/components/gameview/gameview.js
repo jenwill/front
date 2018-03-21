@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { renderIf } from '../../lib/utils';
-import TruthyFalsyMobileView from './truthyfalsy/mobileview';
+import TruthyFalsyPlayerView from './truthyfalsy/playerview';
 import * as gameActions from '../../action/game-action';
 
 // we need to check for a roomCode props, or else redirect client to landing
@@ -25,6 +25,7 @@ class GameView extends Component {
       currentAnswer: '',
       currentAnswerResults: [],
       displayResults: '',
+      redirectToErrorView: false,
     };
 
     this.startGame = this.startGame.bind(this);
@@ -35,15 +36,21 @@ class GameView extends Component {
     console.log('gameview: component did mount');
     // when the host clicks the start game button, redirects all players from waitingroom to gameview page also
     if (this.isHost) {
+      console.log('isHost', this.props.room.nickname);
       // console.log('PLAYER ID ARRAY', this.props.room.playerIDs);
       // this.socket.emit('UPDATE_PLAYERARRAY', this.props.room.playerIDs, this.props.room.code);
       this.socket.emit('REDIRECT_PLAYERS', this.roomCode, '/gameview');
       this.startGame();
     }
+
+    // if the host disconnects, redirects to errorview
+    this.socket.on('REDIRECT_DISCONNECT', () => {
+      this.setState({ redirectToErrorView: true });
+    });    
     
     // when receiving a question from back end
     this.socket.on('SEND_QUESTION', (question) => {
-      console.log('__question phase');
+      console.log('___received a question from back end, question phase');
       this.setState({
         questionPhase: true,
         answerPhase: false,
@@ -80,7 +87,7 @@ class GameView extends Component {
 
     // after the question phase and all answers are in
     this.socket.on('INITIATE_ANSWER_PHASE', () => {
-      console.log('__answer phase');
+      console.log('__INITIATING ANSWER PHASE FROM BACK END');
       this.setState({
         questionPhase: false,
         answerPhase: true,
@@ -89,6 +96,13 @@ class GameView extends Component {
       // allows time for componentWillUnmount in the mobile view component to fire for unresponsive players, so that we will receive scores for every player
       setTimeout(this.tallyAnswers, 1000);
     });
+
+
+    this.socket.on('TRUTHYFALSY_HOST_PASS_ANSWER', (isCorrect, id, roomCode) => {
+      console.log('passing answer to host');
+      this.socket.emit('TRUTHYFALSY_HOST_RECEIVE_ANSWER', isCorrect, id, roomCode);
+    });
+
   }
 
   startGame() {
@@ -117,7 +131,7 @@ class GameView extends Component {
         {renderIf(this.state.questionPhase, <div id="game-prompt">{this.state.currentQuestion}</div>)}
 
 
-        {renderIf(this.state.questionPhase, <div id="game-mobile-view"><TruthyFalsyMobileView /></div>)}
+        {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view"><TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} /></div>)}
 
 
         {renderIf(this.state.answerPhase, <div id="host-answer-view">
@@ -134,6 +148,9 @@ class GameView extends Component {
 
 
         {renderIf(this.state.endGame, <div id="player-endgame-view">Player Endgame View</div>)}
+
+
+        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
       </Fragment>
     );
   }

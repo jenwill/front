@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import { renderIf } from '../../../lib/utils';
 
 // we need to check for a roomCode props, or else redirect client to landing
-class TruthyFalsyMobileView extends Component {
+class TruthyFalsyPlayerView extends Component {
   constructor(props) {
     super(props);
     console.log('truthyfalsy mobileview props', this.props);
     this.socket = this.props.socket;
     this.instance = this.props.room.instance;
     this.answer = '';
+    this.roomCode = this.props.room.code;
 
     this.state = {
       questionAnswered: false,
@@ -21,7 +22,7 @@ class TruthyFalsyMobileView extends Component {
 
   componentWillUnMount() {
     if (!this.state.questionAnswered)
-      this.socket.emit('SEND_ANSWER', null, this.socket.id);
+      this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
   }
   
   handleSubmitAnswer(e) {
@@ -31,8 +32,15 @@ class TruthyFalsyMobileView extends Component {
 
     console.log('handleSubmitAnswer', e.target.value);
     this.answer = e.target.value;
+    if (this.answer === this.props.currentAnswer.toString()) {
+      console.log('right answer');
+      this.socket.emit('TRUTHYFALSY_SEND_ANSWER', true, this.socket.id, this.roomCode);
+    }
+    else {
+      console.log('wrong answer');
+      this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
+    }
 
-    this.socket.emit('SEND_ANSWER', this.answer, this.socket.id);
   }
 
   render() {
@@ -61,4 +69,4 @@ let mapStateToProps = state => ({
 
 let mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(TruthyFalsyMobileView);
+export default connect(mapStateToProps, mapDispatchToProps)(TruthyFalsyPlayerView);

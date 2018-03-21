@@ -42,7 +42,7 @@ class App extends Component {
                 <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} />
                 <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
                 <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
-                <Route exact path="/error/disconnected" component={<Disconnected />} />
+                <Route exact path="/error/disconnected" component={() => store.getState().socket ? <Disconnected /> : <Redirect to="/" />} />
               </Fragment>
             </div>
           </BrowserRouter>
