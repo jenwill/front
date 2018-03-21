@@ -63,10 +63,4 @@ class App extends Component {
 }
 
 
-<Route exact path="/dashboard" component={() =>
-  store.getState().token
-    ? <Dashboard token={token} />
-    : <Redirect to="/welcome/signin" />}
-/>;
-
 export default App;
