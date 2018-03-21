@@ -26,11 +26,14 @@ class ChooseGame extends Component {
     // superagent request to get the quiz selected, pushes it to state, and then direct user to the waiting room page
     // using hard coded values for now
     let game = 'truthyfalsy';
-    let instance = [
-      { 'question': 'React is a JS framework.', 'answer': false },
-      { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-      { 'question': 'JavaScript is single-threaded.', 'answer': true },
-    ];
+    let instance = {
+      name: 'Sample Quiz',
+      questions: [
+        { 'question': 'React is a JS framework.', 'answer': false },
+        { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
+        { 'question': 'JavaScript is single-threaded.', 'answer': true },
+      ],
+    };
 
     this.props.setRoom({
       game: game,

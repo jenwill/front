@@ -36,7 +36,7 @@ class Landing extends Component {
         <Link to={{
           pathname: '/joinroom',
         }}>
-          <button type="button" className="landing-button">Join room as player (will log you out as a host)</button>
+          <button type="button" className="landing-button">Join room as player</button>
         </Link>
 
         {renderIf(this.state.showAuth, <AuthForm

@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { renderIf } from '../../lib/utils';
+import TruthyFalsyMobileView from './truthyfalsy/mobileview';
 
 // we need to check for a roomCode props, or else redirect client to landing
 class GameView extends Component {
@@ -13,6 +15,14 @@ class GameView extends Component {
     this.instance = this.props.room.instance;
     this.isHost = this.props.room.isHost;
 
+    this.state = { 
+      questionPhase: null,
+      answerPhase: null,
+      endGame: false,
+      currentQuestion: null,
+      questionSent: false,
+    };
+
     this.startGame = this.startGame.bind(this);
   }
 
@@ -21,6 +31,16 @@ class GameView extends Component {
     if (this.isHost) 
       this.socket.emit('REDIRECT_PLAYERS', this.roomCode, '/gameview');
     this.startGame();
+
+    // when receiving a question from back end
+    this.socket.on('SEND_QUESTION', (question) => {
+      this.setState({
+        questionPhase: true,
+        answerPhase: false,
+        questionSent: true,
+        currentQuestion: question,
+      });
+    });
   }
 
   startGame() {
@@ -31,18 +51,24 @@ class GameView extends Component {
   render() {
     return (
       <Fragment>
-        <h1>{this.game}: [this.instance.name]</h1>
+        <h1>{this.game}: {this.instance.name}</h1>
 
-        <div id="game-prompt">Question Goes Here</div>
-
-
-        <div id="game-mobile-view">Mobile View Goes Here</div>
+        {renderIf(this.state.questionPhase && this.state.questionSent, <div id="game-prompt">{this.state.currentQuestion.question}</div>)}
 
 
-        <div id="host-answer-view">Host Answer View</div>
+        {renderIf(this.state.questionPhase && this.state.questionSent, <div id="game-mobile-view"><TruthyFalsyMobileView /></div>)}
 
 
-        <div id="player-answer-view">Player Answer View</div>
+        {renderIf(this.state.answerPhase, <div id="host-answer-view">Host Answer View</div>)}
+
+
+        {renderIf(this.state.answerPhase, <div id="player-answer-view">Player Answer View</div>)}
+
+
+        {renderIf(this.state.endGame, <div id="host-endgame-view">Host Endgame View</div>)}
+
+
+        {renderIf(this.state.endGame, <div id="player-endgame-view">Player Endgame View</div>)}
       </Fragment>
     );
   }
@@ -52,6 +78,7 @@ let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
 });
+
 let mapDispatchToProps = dispatch => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameView);

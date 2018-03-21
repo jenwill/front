@@ -59,15 +59,21 @@ class WaitingRoom extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.socket.emit('LEAVE_ROOM', this.props.room.code);
+  }
+
   render() {
     return (
       <Fragment>
         <h1>waiting room: {this.props.room.game}</h1>
 
+        Room Code: {this.props.room.code}<br />
         Players in Room: {this.state.numPlayers}<br />
-        Players: {this.state.playerNames.join(', ')}
+        Max Players: {this.props.room.maxPlayers}<br />
+        Players: {renderIf(this.state.numPlayers === 0, 'none yet!')} {this.state.playerNames.join(', ')}
         <br />
-        {renderIf(this.isHost, <Link to={{
+        {renderIf(this.isHost && this.state.numPlayers > 0, <Link to={{
           pathname: '/gameview',
           socket: this.socket,
           game: this.game,
