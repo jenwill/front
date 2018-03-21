@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Route, Redirect, Link} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as roomActions from '../../action/room-action';
 import { renderIf } from '../../lib/utils';
@@ -45,7 +45,8 @@ class ChooseGame extends Component {
     return (
       <Fragment>
         <h1>CHOOSE YO GAME</h1>
-        <button type="button" className="choosegame-button" id="create-quiz">Create Quiz</button>
+        <Link to={'/createquiz'}>Create Quiz</Link>
+        {/* <button type="button" className="choosegame-button" id="create-quiz" onClick={() => }>Create Quiz</button> */}
 
         <div className="game-choice" id="truthyfalsygame">
           <img src="http://via.placeholder.com/200x200" />
