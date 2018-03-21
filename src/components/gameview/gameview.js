@@ -1,31 +1,29 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 // we need to check for a roomCode props, or else redirect client to landing
 class GameView extends Component {
   constructor(props) {
     super(props);
     console.log('gameview props', this.props);
-    this.socket = this.props.location.socket;
-    this.roomCode = this.props.location.roomCode;
-    this.game = this.props.location.game;
-    this.instance = this.props.location.instance;
+    this.socket = this.props.socket;
+    this.game = this.props.room.game;
+    this.roomCode = this.props.room.code;
+    this.instance = this.props.room.instance;
+    this.isHost = this.props.room.isHost;
 
     this.startGame = this.startGame.bind(this);
   }
 
   componentDidMount() {
+    // when the host clicks the start game button, redirects all players from waitingroom to gameview page also
+    if (this.isHost) 
+      this.socket.emit('REDIRECT_PLAYERS', this.roomCode, '/gameview');
     this.startGame();
   }
 
   startGame() {
-    // game and quiz are passed in from the choosegame component, which makes a superagent request to get the quiz.
-    // let game = 'truthyfalsy';
-    // let instance = [
-    //   { 'question': 'React is a JS framework.', 'answer': false },
-    //   { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-    //   { 'question': 'JavaScript is single-threaded.', 'answer': true },
-    // ];
     let data = { 'game': this.game, 'instance': this.instance, 'roomCode': this.roomCode };
     this.socket.emit('START_GAME', data);
   }
@@ -50,4 +48,10 @@ class GameView extends Component {
   }
 }
 
-export default GameView;
+let mapStateToProps = state => ({
+  room: state.room,
+  socket: state.socket,
+});
+let mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameView);

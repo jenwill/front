@@ -29,18 +29,6 @@ class App extends Component {
   }
 
   render() {
-    const waitingRoomComponent = props => {
-      return (
-        <WaitingRoom socket={this.getState().socket} />
-      );
-    };
-
-    const landingComponent = props => {
-      return (
-        <Landing socket={this.getState().socket} />
-      );
-    };
-
     return (
       <Fragment>
         <Provider store={store}>

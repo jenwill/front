@@ -17,6 +17,7 @@ class WaitingRoom extends Component {
     this.state = {
       numPlayers: 0,
       playerNames: [],
+      redirectToGameView: false,
     };
   }
 
@@ -42,14 +43,19 @@ class WaitingRoom extends Component {
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
-    else console.log('is not host');
+    else console.log('Is not host');
 
     // update number of players in waiting room
-    this.socket.on('PLAYER_JOINED', (num, names) => {
-      this.setState({ 
-        numPlayers: num, 
+    this.socket.on('TRACK_PLAYERS', (num, names) => {
+      this.setState({
+        numPlayers: num,
         playerNames: names,
       });
+    });
+
+    // listens for when host clicks start game, redirects players to gameview
+    this.socket.on('REDIRECT', path => {
+      this.setState({ redirectToGameView: true });
     });
   }
 
@@ -63,14 +69,16 @@ class WaitingRoom extends Component {
         <br />
         {renderIf(this.isHost, <Link to={{
           pathname: '/gameview',
+          socket: this.socket,
           game: this.game,
           instance: this.instance,
           isHost: this.isHost,
           roomCode: this.props.room.code,
-          socket: this.socket,
         }}>
           <button type="button" className="startgame-button" id="start-game">Start Game</button>
         </Link>)}
+
+        {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
       </Fragment>
     );
   }
