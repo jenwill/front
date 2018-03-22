@@ -7,12 +7,12 @@ import { renderIf } from '../../../lib/utils';
 class TruthyFalsyPlayerView extends Component {
   constructor(props) {
     super(props);
-    console.log('truthyfalsy mobileview props', this.props);
     this.socket = this.props.socket;
     this.instance = this.props.room.instance;
     this.answer = '';
     this.roomCode = this.props.room.code;
-
+    console.log('truthyfalsy mobileview props', this.props, this.answer);
+    
     this.state = {
       questionAnswered: false,
     };
@@ -20,7 +20,7 @@ class TruthyFalsyPlayerView extends Component {
     this.handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     if (!this.state.questionAnswered)
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
   }
@@ -40,7 +40,6 @@ class TruthyFalsyPlayerView extends Component {
       console.log('wrong answer');
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
     }
-
   }
 
   render() {

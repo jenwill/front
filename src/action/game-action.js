@@ -7,4 +7,4 @@ export const gameDelete = () => {
   return {
     type: 'GAME_DELETE',
   };
-};
+}; 

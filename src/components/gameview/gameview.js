@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { renderIf } from '../../lib/utils';
 import TruthyFalsyPlayerView from './truthyfalsy/playerview';
+import TruthyFalsyAnswerView from './truthyfalsy/answerview';
+
 import * as gameActions from '../../action/game-action';
 
 // we need to check for a roomCode props, or else redirect client to landing
@@ -24,12 +26,17 @@ class GameView extends Component {
       currentQuestion: '',
       currentAnswer: '',
       currentAnswerResults: [],
-      displayResults: '',
+      correctResults: [],
+      incorrectResults: [],
+      allResults: [],
       redirectToErrorView: false,
+      redirectEndGame: false,
     };
 
     this.startGame = this.startGame.bind(this);
     this.tallyAnswers = this.tallyAnswers.bind(this);
+    this.gameResults = this.gameResults.bind(this);
+    this.endGameRedirect = this.endGameRedirect.bind(this);
   }
 
   componentDidMount() {
@@ -50,50 +57,48 @@ class GameView extends Component {
     
     // when receiving a question from back end
     this.socket.on('SEND_QUESTION', (question) => {
-      console.log('___received a question from back end, question phase');
       this.setState({
         questionPhase: true,
         answerPhase: false,
         currentQuestion: question.question,
         currentAnswer: question.answer,
         currentAnswerResults: [],
-        displayResults: '',
+        correctResults: [],
+        incorrectResults: [],
       });
-      this.props.setGame(this.state.currentAnswerResults);
-      this.res = '';
+      console.log('___received a question from back end, question phase');
     });
 
-    // if correct answer from <MobileView />
+    // if correct answer from player
     this.socket.on('CORRECT_ANSWER', (nickname, score) => {
       console.log('__correct answer');
-      let answerResults = this.state.currentAnswerResults;
-      answerResults.push({'nickname': nickname, 'score': score, 'correct': true});
+      let answerResult = {'nickname': nickname, 'score': score, 'correct': true};
+      this.state.currentAnswerResults.push(answerResult);
       this.setState({
-        currentAnswerResults: answerResults,
+        currentAnswerResults: this.state.currentAnswerResults,
       });
-      this.props.setGame(this.state.currentAnswerResults);
     });
 
-    // if wrong answer from <MobileView />
+    // if wrong answer from player
     this.socket.on('WRONG_ANSWER', (nickname, score) => {
       console.log('__wrong answer');
-      let answerResults = this.state.currentAnswerResults;
-      answerResults.push({ 'nickname': nickname, 'score': score, 'correct': false });
+      let answerResult = { 'nickname': nickname, 'score': score, 'correct': false };
+      this.state.currentAnswerResults.push(answerResult);
       this.setState({
-        currentAnswerResults: answerResults,
+        currentAnswerResults: this.state.currentAnswerResults,
       });
-      this.props.setGame(this.state.currentAnswerResults);
     });
 
     // after the question phase and all answers are in
     this.socket.on('INITIATE_ANSWER_PHASE', () => {
-      console.log('__INITIATING ANSWER PHASE FROM BACK END');
+      console.log('__INITIATING ANSWER PHASE FROM BACK END', this.state.currentAnswerResults);
       this.setState({
         questionPhase: false,
         answerPhase: true,
       });
+    });
 
-      // allows time for componentWillUnmount in the mobile view component to fire for unresponsive players, so that we will receive scores for every player
+    this.socket.on('TALLY_ANSWERS', () => {
       setTimeout(this.tallyAnswers, 1000);
     });
 
@@ -103,6 +108,24 @@ class GameView extends Component {
       this.socket.emit('TRUTHYFALSY_HOST_RECEIVE_ANSWER', isCorrect, id, roomCode);
     });
 
+    this.socket.on('END_GAME', () => {
+      console.log('__INITIATING END GAME');
+      this.setState({
+        questionPhase: false,
+        answerPhase: false,
+        endGame: true,
+      });
+
+      setTimeout(this.endGameRedirect, 20000);
+    });
+    
+    this.socket.on('DISPLAY_ENDGAME_RESULTS', () => {
+      this.gameResults();
+    });
+
+    this.socket.on('REDIRECT_ENDGAME', () => {
+      this.setState({ redirectEndGame: true });
+    });
   }
 
   startGame() {
@@ -112,15 +135,44 @@ class GameView extends Component {
   }
 
   tallyAnswers() {
+    // hella work to display html in react...
     console.log('__tallyanswers');
-    this.res = '';
+    this.correctResults = [];
+    this.incorrectResults = [];
     this.state.currentAnswerResults.forEach(result => {
-      let color = result.correct ? 'green' : 'red';
-      this.res += `<span className="${color}"><span className="answer-result-nickname">${result.nickname}</span>: <span className="answer-result-score">${result.score}</span></span><br />`;
+      if (result.correct) {
+        this.correctResults = this.correctResults.concat([<span className="correct-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-correct">CORRECT</span></span>, <br />]);
+      }
+      else {
+        this.incorrectResults = this.incorrectResults.concat([<span className="incorrect-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-incorrect">INCORRECT</span></span>, <br />]);
+      }
     });
+    this.correctResults.map((el, i) => <span key={i}>{el}</span>);
+    this.incorrectResults.map((el, i) => <span key={i}>{el}</span>);
+
     this.setState({
-      displayResults: this.res,
+      correctResults: this.correctResults,
+      incorrectResults: this.incorrectResults,
     });
+  }
+
+  gameResults() {
+    console.log('__endgame');
+    this.allResults = [];
+    this.state.currentAnswerResults.sort((a, b) => b.score - a.score);
+    this.state.currentAnswerResults.forEach(result => {
+      this.allResults = this.allResults.concat([<span className="endgame-result"><span className="endgame-result-nickname">{result.nickname}</span>: <span className="endgame-result-score">{result.score}</span></span>, <br />]);
+    });
+    this.allResults.map((el, i) => <span key={i}>{el}</span>);
+
+    this.setState({
+      allResults: this.allResults,
+    });
+  }
+
+  endGameRedirect() {
+    console.log('redirecting after end game');
+    this.socket.emit('END_GAME', this.roomCode);
   }
 
   render() {
@@ -136,21 +188,31 @@ class GameView extends Component {
 
         {renderIf(this.state.answerPhase, <div id="host-answer-view">
           <h2>Question: {this.state.currentQuestion}</h2>
-          <h2>Answer: {this.state.currentAnswer}</h2>
-          (this.state.displayResults)
+          <h2>Answer: {this.state.currentAnswer.toString()}</h2>
+          <TruthyFalsyAnswerView>
+            {this.state.correctResults}
+            {this.state.incorrectResults}
+          </TruthyFalsyAnswerView>
+        </div>)}
+
+        {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
+
+
+        {renderIf(this.state.endGame, <div id="host-endgame-view">
+          <TruthyFalsyAnswerView>
+            <h3>End Game</h3>
+            <h5>You will be redirected after 20 seconds.</h5>
+            {this.state.allResults}
+          </TruthyFalsyAnswerView>
         </div>)}
 
 
-        {renderIf(this.state.answerPhase, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
-
-
-        {renderIf(this.state.endGame, <div id="host-endgame-view">Host Endgame View</div>)}
-
-
-        {renderIf(this.state.endGame, <div id="player-endgame-view">Player Endgame View</div>)}
+        {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
 
 
         {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
+        {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+
       </Fragment>
     );
   }
@@ -159,10 +221,12 @@ class GameView extends Component {
 let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
+  game: state.game,
 });
 
 let mapDispatchToProps = dispatch => ({
   setGame: game => dispatch(gameActions.gameSet(game)),
+  deleteGame: () => dispatch(gameActions.gameDelete()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameView);
