@@ -27,6 +27,7 @@ class WaitingRoom extends Component {
     console.log('waitingroom props', this.props);
     this.state = {
       numPlayers: 0,
+      roomCode: null,
       playerNames: [],
       redirectToGameView: false,
       redirectToErrorView: false,
@@ -66,6 +67,8 @@ class WaitingRoom extends Component {
           maxPlayers: maxPlayers,
           roomHost: roomHost,
         });
+
+        this.setState({roomCode: roomCode});
 
         this.socket.room = roomCode;
         let socket = this.socket;
@@ -113,27 +116,52 @@ class WaitingRoom extends Component {
   render() {
     return (
       <Fragment>
-        <h1>waiting room: {this.props.room.game}</h1>
+        <div id="waitingroom-wrapper">
+          <div className="waitingroom-header">
+            <h1>Waiting Room</h1>
+            <h2 className="waitingroom-h2 secondary-color">{this.props.room.game}</h2>
+          </div>
 
-        Room Code: {this.props.room.code}<br />
-        Players in Room: {this.state.numPlayers}<br />
-        Max Players: {this.props.room.maxPlayers}<br />
-        Players: {renderIf(this.state.numPlayers === 0, 'none yet!')} {this.state.playerNames.join(', ')}
-        <br />
-        {renderIf(this.isHost && this.state.numPlayers > 0, <Link to={{
-          pathname: '/gameview',
-          // socket: this.socket,
-          // game: this.game,
-          // instance: this.instance,
-          // isHost: this.isHost,
-          // roomCode: this.props.room.code,
-        }}>
-          <button type="button" className="startgame-button" id="start-game">Start Game</button>
-        </Link>)}
+          <table className="waitingroom-table">
+            <tbody>
+              <tr>
+                <td className="left">Room Code</td>
+                <td className="right secondary-color">{this.props.room.code}</td>
+              </tr>
+              <tr>
+                <td className="left"># Players</td>
+                <td className="right secondary-color">{this.state.numPlayers}</td>
+              </tr>
+              <tr>
+                <td className="left">Max Players</td>
+                <td className="right secondary-color">{this.props.room.maxPlayers}</td>
+              </tr>
+              <tr>
+                <td className="left">Players</td>
+                <td className="right secondary-color"></td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="left secondary-color">{renderIf(this.state.numPlayers === 0, 'None yet!')} {this.state.playerNames.join(', ')}</td>
+              </tr>
+            </tbody>
+          </table>
 
-        {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
-        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
-        <button onClick={this.handleMute}>mute</button>
+          <br /><br />
+
+          {renderIf(this.isHost && this.state.numPlayers > 0, <Link to={{ pathname: '/gameview' }}>
+            <button type="button" className="startgame-button submit" id="start-game">Start Game</button>
+          </Link>)}
+
+          {renderIf(this.isHost && !this.state.numPlayers, <span className="tooltip">Waiting for players to join...</span>)}
+
+          {renderIf(!this.isHost, <span className="tooltip">Waiting for host to start game...</span>)}
+
+          {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
+          {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
+
+          <button onClick={this.handleMute}>mute</button>
+
+        </div>
       </Fragment>
     );
   }

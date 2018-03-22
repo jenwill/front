@@ -1,0 +1,94 @@
+// // ========================= FORM ========================= //
+
+button {
+    @extend %borders;
+    outline: none;
+    margin: 0.5em 0.2em;
+    padding: 0.7em 2em;
+    color: $secondary-color;
+    background: $background-color;
+    font-size: 1em;
+    font-weight: 100;
+    letter-spacing: 0.1em;
+    transition-duration: 0.25s;
+    min-width: 12em;
+    max-width: 16em;
+    width: 80%;
+
+    &:hover {
+        border: solid 1px $secondary-color;
+        background: $button-hover-color;
+    }
+
+    &:active {
+        border: solid 1px $primary-color;
+        color: $background-color;
+        background: $primary-color;
+        transform: scale(1.1);
+    }
+}
+
+%formelements {
+    @extend %borders;
+    outline: none;
+    padding: 0.7em;
+    color: $primary-color;
+    font-size: 1em;
+    font-weight: 100;
+    letter-spacing: 0.1em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+form {
+    label {
+        font-size: 1em;
+    }
+
+    input {
+        @extend %formelements;
+        background: $background-color;
+        display: block;
+        margin: 0.1em auto 0.5em auto;
+        min-width: 12em;
+        max-width: 16em;
+        width: 80%;
+
+        &:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset;
+            -webkit-text-fill-color: $secondary-color;
+        }
+
+        &::placeholder {
+            color: $tertiary-color;
+        }
+
+        &:invalid {
+            border: 1px solid $secondary-color;
+        }
+
+        &:required {
+            box-shadow: none;
+        }
+
+        &[type=text] {
+            text-transform: uppercase;
+        }
+    }
+}
+
+select {
+    @extend %formelements;
+    border: solid 1px $secondary-color;
+    border-radius: 0.1em;
+    color: $secondary-color;
+    min-width: 12em;
+    max-width: 16em;
+    width: 80%;
+    background: $button-hover-color;
+}

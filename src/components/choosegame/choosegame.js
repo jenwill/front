@@ -76,39 +76,31 @@ class ChooseGame extends Component {
 
     return (
       <Fragment>
-        <h1>CHOOSE YO GAME</h1>
-        <Link to={'/createquiz'}><button type="button">Create Quiz</button></Link>
-        {/* <button type="button" className="choosegame-button" id="create-quiz" onClick={() => }>Create Quiz</button> */}
+        <div id="choosegame-wrapper">
+          <div className="choosegame-header">
+            <h1 className="choosegame-h1">Choose Game</h1>
+            <h2 className="choosegame-h2">Select your game <span className="secondary-color">& quiz</span></h2>
+          </div>
+          <div className="center">
+            <Link to="/createquiz">
+              <button type="button" className="choosegame-button submit">Create Quiz</button>
+            </Link>
+            <div className="game-choice" id="truthyfalsygame">
+              <img className="choosegame-image" src="http://via.placeholder.com/250x250" />
+              <div className="select">
+                <select>
+                  <option disabled selected hidden>click to select quiz...</option>
+                  <option>Sample option</option>
+                  {this.props.quizzes ? this.props.quizzes.map(quiz =>
+                    <option key={quiz._id} value={quiz.name}>{quiz.name}</option>) : undefined}
+                </select>
+              </div>
+              <button type="button" onClick={this.getQuiz}>Choose Game</button>
+            </div>
+          </div>
 
-        {/* <div className="game-choice" id="truthyfalsygame">
-          <img src="http://via.placeholder.com/200x200" />
-          <h3>Title</h3>
-          <select name="choose-quiz">
-            <option value="value1">Value 1</option>
-          </select>
-          <button type="button" onClick={this.getQuiz}>Choose Game</button>
-        </div> */}
-
-        <div className="game-choice" id="truthyfalsygame">
-          <img src="http://via.placeholder.com/200x200" />
-          <h3>Title2</h3>
-          <select id="quiz-selector" name="choose-quiz">
-            {/* <option value="value1">Value asdf</option> */}
-            {this.props.quizzes ? this.props.quizzes.map(quiz =>
-              <option key={quiz._id} value={quiz._id}>{quiz.name}</option>) : undefined}
-            {/* {console.log('profile props games', this.props.profile)}
-            {console.log('quizzes', this.props.quizzes)} */}
-            {/* {console.log('user quizzes', userQuizzes)} */}
-          </select>
-          <button type="button" onClick={this.getQuiz}>Choose Game</button>
+          {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
         </div>
-
-        {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
-
-        {/* {this.props.quizzes ?
-          console.log(this.props.quizzes)
-          : undefined} */}
-
       </Fragment>
     );
   }

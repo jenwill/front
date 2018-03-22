@@ -47,12 +47,12 @@ class TruthyFalsyPlayerView extends Component {
       <Fragment>
         {renderIf(!this.state.questionAnswered, 
           <div id="mobile-question-view">
-            <button type="button" id="true" value="true" onClick={this.handleSubmitAnswer}>true</button>
-            <button type="button" id="false" value="false" onClick={this.handleSubmitAnswer}>false</button>
+            <button type="button" className="truthyfalsy-button submit" id="true" value="true" onClick={this.handleSubmitAnswer}>true</button>
+            <button type="button" id="false" className="truthyfalsy-button submit" value="false" onClick={this.handleSubmitAnswer}>false</button>
           </div>)}
 
         {renderIf(this.state.questionAnswered,
-          <div id="mobile-answer-submitted-view">
+          <div id="mobile-answer-submitted-view" className="secondary-color">
             You have submitted your answer. Hang on tight and wait for the results!
           </div>)}
 

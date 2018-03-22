@@ -1,0 +1,90 @@
+#gameview-wrapper {
+    animation-name: waitingroom-animation;
+    animation-duration: 1.5s;
+    text-align: center;
+    max-width: 85%;
+    margin: auto;
+}
+
+@keyframes gameview-animation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.gameview-h2 {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.gameview-header {
+    width: 15em;
+    margin: 12vh auto 0.5em auto;
+    text-align: center;
+    display: block;
+}   
+
+#game-prompt {
+    margin-top: 1.5em;
+    font-size: 3em;
+    line-height: 3em;
+    text-align: center;
+}
+
+#game-prompt-playerview {
+    margin-top: 2em;
+    font-size: 0.8em;
+    margin: 1.5em auto;
+}
+
+#mobile-answer-submitted-view, #player-answerview {
+    margin: auto;
+    margin-top: 3em;
+    font-size: 0.8em;
+    max-width: 90%;
+    text-align: center;
+}
+
+#host-answer-view {
+    margin: 2em auto 0 auto;
+    max-width: 70%;
+}
+
+.gameview-table {
+    width: 100%;
+    margin-bottom: 2em;
+    
+    td {
+        padding: 0.5em;
+    }
+}
+
+.gameview-table-question {
+    text-align: left;
+    width: 4em;
+    border: solid 1px $secondary-color;
+}
+
+.gameview-endgame {
+    font-size: 3em;
+    margin: 1em auto;
+}
+
+.gameview-table-answer {
+    text-align: right;
+}
+
+.truthyfalsy-answerview {
+    animation-name: truthyfalsy-answerview;
+    animation-duration: 1s;
+    margin-top: 2em;
+}
+
+@keyframes truthyfalsy-answerview {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.truthyfalsy-button {
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
+}
