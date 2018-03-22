@@ -88,11 +88,11 @@ class ChooseGame extends Component {
             <div className="game-choice" id="truthyfalsygame">
               <img className="choosegame-image" src="http://via.placeholder.com/250x250" />
               <div className="select">
-                <select>
+                <select id="quiz-selector">
                   <option disabled selected hidden>click to select quiz...</option>
                   <option>Sample option</option>
                   {this.props.quizzes ? this.props.quizzes.map(quiz =>
-                    <option key={quiz._id} value={quiz.name}>{quiz.name}</option>) : undefined}
+                    <option key={quiz._id} value={quiz._id}>{quiz.name}</option>) : undefined}
                 </select>
               </div>
               <button type="button" onClick={this.getQuiz}>Choose Game</button>
