@@ -4,8 +4,20 @@ import { connect } from 'react-redux';
 import { renderIf } from '../../lib/utils';
 import TruthyFalsyPlayerView from './truthyfalsy/playerview';
 import TruthyFalsyAnswerView from './truthyfalsy/answerview';
-
 import * as gameActions from '../../action/game-action';
+import {Howl, Howler} from 'howler';
+import sounds from '../../lib/sounds';
+import soundActions from '../../action/sound-action';
+
+const endGameMusic = new Howl({
+  src: [sounds.endgamemusic],
+  loop: true,
+});
+
+const answerCorrect = new Howl({
+  src: [sounds.answercorrect],
+  loop: false,
+});
 
 // we need to check for a roomCode props, or else redirect client to landing
 class GameView extends Component {
@@ -18,6 +30,7 @@ class GameView extends Component {
     this.instance = this.props.room.instance;
     this.isHost = this.props.room.isHost;
     this.res = '';
+    this.backgroundSound = this.props.backgroundSound;
 
     this.state = { 
       questionPhase: null,
@@ -37,6 +50,7 @@ class GameView extends Component {
     this.tallyAnswers = this.tallyAnswers.bind(this);
     this.gameResults = this.gameResults.bind(this);
     this.endGameRedirect = this.endGameRedirect.bind(this);
+    this.handleMute = this.handleMute.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +81,7 @@ class GameView extends Component {
         incorrectResults: [],
       });
       console.log('___received a question from back end, question phase');
+      answerCorrect.play();
     });
 
     // if correct answer from player
@@ -128,6 +143,18 @@ class GameView extends Component {
     });
   }
 
+  handleMute() {
+    if (this.props.backgroundSound.backgroundSound) {
+      answerCorrect.mute(true);
+      endGameMusic.mute(true);
+      this.props.toggleSound(this.props.backgroundSound);
+    } else {
+      answerCorrect.mute(false);
+      endGameMusic.mute(false);
+      this.props.toggleSound(this.props.backgroundSound);
+    }
+  }
+
   startGame() {
     console.log('gameview: start game');
     let data = { 'game': this.game, 'instance': this.instance, 'roomCode': this.roomCode };
@@ -159,6 +186,7 @@ class GameView extends Component {
   }
 
   gameResults() {
+    if(this.isHost) endGameMusic.play();
     console.log('__endgame');
     this.allResults = [];
     this.state.currentAnswerResults.sort((a, b) => b.score - a.score);
@@ -174,8 +202,10 @@ class GameView extends Component {
   }
 
   endGameRedirect() {
+    if(this.isHost) endGameMusic.stop();
     console.log('redirecting after end game');
     this.socket.emit('END_GAME', this.roomCode);
+    
   }
 
   render() {
@@ -231,9 +261,9 @@ class GameView extends Component {
 
           {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
 
-
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
           {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+          <button onClick={this.handleMute}>mute</button>
 
         </div>
       </Fragment>
@@ -245,11 +275,13 @@ let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
   game: state.game,
+  backgroundSound: state.backgroundSound
 });
 
 let mapDispatchToProps = dispatch => ({
   setGame: game => dispatch(gameActions.gameSet(game)),
   deleteGame: () => dispatch(gameActions.gameDelete()),
+  toggleSound: backgroundSound => dispatch(soundActions.toggleSound(backgroundSound)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameView);
