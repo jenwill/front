@@ -1,0 +1,37 @@
+#choosegame-wrapper {
+    animation-name: choosegame-animation;
+    animation-duration: 1.5s;
+    text-align: center;
+}
+
+@keyframes choosegame-animation {
+    from { margin-top: 100% }
+    to { margin-top: 0; }
+}
+
+.choosegame-h2 {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.choosegame-input {
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+}
+
+.choosegame-header {
+    width: 15em;
+    margin: 8vh auto 0.5em auto;
+    text-align: center;
+    display: block;
+}
+
+.choosegame-image {
+    @extend %borders;
+    min-width: 12em;
+    min-height: 12em;
+    max-width: 16em;
+    max-height: 16em;
+    width: 80%;
+    height: 80%;
+}

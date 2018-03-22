@@ -1,0 +1,20 @@
+#joinroom-wrapper {
+    text-align: center;
+    animation-name: joinroom-animation;
+    animation-duration: 1.5s;
+}
+
+@keyframes joinroom-animation {
+    from { margin-top: 100% }
+    to { margin-top: 0; }
+}
+
+.joinroom-h2 {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+.joinroom-input {
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+}

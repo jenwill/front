@@ -16,16 +16,12 @@ class JoinRoom extends Component {
       code: '',
       nickname: '',
       joinError: '',
-      game: '',
-      instance: '',
+      isHost: false,
+      redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  
-
-  componentWillMount() {
   }
 
   handleChange(e) {
@@ -41,46 +37,46 @@ class JoinRoom extends Component {
       this.setState({'joinError': message});
     });
 
-    this.socket.on('JOINED_ROOM', (game, instance) => {
-      this.setState({'game': game, 'instance': instance});
+    this.socket.on('JOINED_ROOM', (game, instance, maxPlayers) => {
+      console.log('game, instance', game, instance, maxPlayers);
+
+      let code = this.state.code.toUpperCase();
+      let nickname = this.state.nickname.toUpperCase();
 
       this.props.setRoom({
-        game: this.state.game,
-        instance: this.state.instance,
-        roomCode: this.state.code,
+        code: code,
+        nickname: nickname,
         isHost: false,
+        game: game,
+        instance: instance,
+        maxPlayers: maxPlayers,
       });
 
-      this.props.setRoom(this.state);
-
-
+      this.setState({'redirect': true });
     });
   }
 
   render() {
     return (
       <Fragment>
-        <h1>Join Room</h1>
+        <div id="joinroom-wrapper">
+          <header>
+            <h1 className="joinroom-h1">Join Room</h1>
+            <h2 className="joinroom-h2">Start <span className="secondary-color">playing</span></h2>
+          </header>
 
-        <form id="joinroom" className="joinroom-form" onSubmit={this.handleSubmit}>
-          <label className="joinroom-label">Room Code:</label>
-          <input name="code" className="joinroom-input" type="text" placeholder="Room Code" onChange={this.handleChange} required />
-          <label className="joinroom-label">Nickname:</label>
-          <input name="nickname" className="joinroom-input" type="text" placeholder="Name" onChange={this.handleChange} required />
-          <button className="joinroom-submit" type="submit">Join Room</button>
-        </form>
-        <div id="joinroom-error">{this.state.joinError}</div>
+          <form id="joinroom" className="joinroom-form" onSubmit={this.handleSubmit}>
+            <label className="joinroom-label">Room Code:</label>
+            <input name="code" className="joinroom-input" type="text" placeholder="Room Code" onChange={this.handleChange} required />
+            <label className="joinroom-label">Nickname:</label>
+            <input name="nickname" className="joinroom-input" type="text" placeholder="Name" onChange={this.handleChange} required />
+            <button className="joinroom-button" type="submit">Join Room</button>
+          </form>
 
+          <div className="tooltip">{this.state.joinError}</div>
 
-
-        {/* <Link to={{
-          pathname: '/waitingroom',
-          socket: this.socket,
-          game: this.state.game,
-          instance: this.state.instance,
-          roomCode: this.state.code,
-          isHost: false,
-        }}><button id="joinroom-waitingroom" className="hide" type="button"></button></Link> */}
+          {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
+        </div>
       </Fragment>
     );
   }

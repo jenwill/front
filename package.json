@@ -46,6 +46,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "prop-types": "^15.6.1"
+    "prop-types": "^15.6.1",
+    "style-loader": "^0.20.3"
   }
 }
