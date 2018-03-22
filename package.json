@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.1",
-    "style-loader": "^0.20.3"
+    "style-loader": "^0.20.3",
     "file-loader": "^1.1.11",
     "prop-types": "^15.6.1",
     "react-sound": "^1.1.0",
