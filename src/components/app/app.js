@@ -34,7 +34,7 @@ class App extends Component {
       <Fragment>
         <Provider store={store}>
           <BrowserRouter>
-            <div className="app">
+            <div id="app">
               <Fragment>
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />

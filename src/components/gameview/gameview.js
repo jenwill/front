@@ -178,41 +178,59 @@ class GameView extends Component {
   render() {
     return (
       <Fragment>
-        <h1>{this.game}: {this.instance.name}</h1>
+        <div id="gameview-wrapper">
+          <div className="gameview-header">
+            <h1>{this.game}</h1>
+            <h2 className="secondary-color">{this.instance.name}</h2>
+          </div>
 
-        {renderIf(this.state.questionPhase, <div id="game-prompt">{this.state.currentQuestion}</div>)}
-
-
-        {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view"><TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} /></div>)}
-
-
-        {renderIf(this.state.answerPhase, <div id="host-answer-view">
-          <h2>Question: {this.state.currentQuestion}</h2>
-          <h2>Answer: {this.state.currentAnswer.toString()}</h2>
-          <TruthyFalsyAnswerView>
-            {this.state.correctResults}
-            {this.state.incorrectResults}
-          </TruthyFalsyAnswerView>
-        </div>)}
-
-        {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
+          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">{this.state.currentQuestion}</div>)}
 
 
-        {renderIf(this.state.endGame, <div id="host-endgame-view">
-          <TruthyFalsyAnswerView>
-            <h3>End Game</h3>
-            <h5>You will be redirected after 20 seconds.</h5>
-            {this.state.allResults}
-          </TruthyFalsyAnswerView>
-        </div>)}
+          {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view">
+            <div id="game-prompt-playerview">{this.state.currentQuestion}</div>
+            <TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} />
+          </div>)}
 
 
-        {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
+          {renderIf(this.state.answerPhase, <div id="host-answer-view">
+            <table className="gameview-table">
+              <tbody>
+                <tr>
+                  <td className="bold left gameview-table-question">Question:</td>
+                  <td><span className="secondary-color right gameview-table-answer">{this.state.currentQuestion}</span></td>
+                </tr>
+                <tr>
+                  <td className="bold left gameview-table-question">Answer:</td>
+                  <td><span className="secondary-color right gameview-table-answer">{this.state.currentAnswer.toString()}</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <TruthyFalsyAnswerView>
+              {this.state.correctResults}
+              {this.state.incorrectResults}
+            </TruthyFalsyAnswerView>
+          </div>)}
+
+          {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
 
 
-        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
-        {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+          {renderIf(this.state.endGame, <div id="host-endgame-view">
+            <TruthyFalsyAnswerView>
+              <h3>End Game</h3>
+              <h5>You will be redirected after 20 seconds.</h5>
+              {this.state.allResults}
+            </TruthyFalsyAnswerView>
+          </div>)}
 
+
+          {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
+
+
+          {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
+          {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+
+        </div>
       </Fragment>
     );
   }

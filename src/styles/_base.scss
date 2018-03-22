@@ -1,0 +1,134 @@
+// ========================= BASE ========================= //
+
+$primary-font: Comfortaa, sans-serif;
+$secondary-font: Acme, sans-serif;
+$background-color: #fff;
+$primary-color: #00a9c4;
+$secondary-color: #ffa205;
+$tertiary-color: #ffd284;
+$link-color: #aaa;
+$hover-color: #00a9c4;
+$button-hover-color: #fff8f4;
+$invalid-color: #c60101;
+
+%borders {
+    border: solid 1px $primary-color;
+    border-radius: 0.1em;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    width: 100%;
+    background: $background-color;
+    color: $primary-color;
+    font: 100% $primary-font;
+    line-height: 1.5em;
+    word-spacing: 0.1em;
+    letter-spacing: 0.07em;
+}
+
+#wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+header {
+    width: 15em;
+    margin: 20vh auto 0.5em auto;
+    text-align: center;
+}
+
+h1 {
+    font-family: $primary-font;
+    font-size: 1.8em;
+    font-weight: 100;
+    line-height: 1.2em;
+    word-spacing: 0.1em;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+h2 {
+    font-size: 0.8em;
+    margin-bottom: 0.3em;
+}
+
+a {
+    color: $link-color;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.primary-color {
+    color: $primary-color;
+}
+
+.secondary-color {
+    color: $secondary-color;
+}
+
+.tooltip {
+    color: $secondary-color;
+    font-size: 0.8em;
+}
+
+.bold {
+    font-weight: 900;
+}
+
+.submit {
+    display: block;
+    margin: 1em auto;
+    border: solid 1px $primary-color;
+    color: $background-color;
+    background: $primary-color;
+
+    &:hover {
+        border: solid 1px $primary-color;
+        background: $background-color;
+        color: $primary-color;
+    }
+}
+
+table { 
+    border: 0; 
+    margin: auto;
+    font-size: 1.2em;
+
+    tr {
+        border: 0;
+        td {
+            border: 0;
+        }
+    }
+}

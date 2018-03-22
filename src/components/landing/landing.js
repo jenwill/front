@@ -17,30 +17,67 @@ class Landing extends Component {
     console.log('state', this.state);
     this.redirect = this.redirect.bind(this);
     this.showAuthForm = this.showAuthForm.bind(this);
+    this.joinRoom = this.joinRoom.bind(this);
   }
 
   redirect(path) {
     this.props.history.push(path);
   }
 
+  joinRoom() {
+
+  }
+
   showAuthForm() {
-    this.setState({showAuth: true});
+    this.setState({ showAuth: true });
+
+    let landingWrapper = document.getElementsByClassName('landing-wrapper')[0];
+    let landingForm = document.getElementsByClassName('landing-form')[0];
+    let hostButton = document.getElementById('host-game-button');
+
+    hostButton.onclick = function() {
+      landingWrapper.classList.add('transition');
+      landingForm.classList.add('transition');
+    };
+    hostButton.click();
+    // document.getElementsByClassName('toggleButton')[0].onclick = function() {
+    //   if(this.innerHTML === 'Play') 
+    //   { 
+    //     this.innerHTML = 'Pause';
+    //     boxOne.classList.add('horizTranslate');
+    //   } else {
+    //     this.innerHTML = 'Play';
+    //     var computedStyle = window.getComputedStyle(boxOne),
+    //         marginLeft = computedStyle.getPropertyValue('margin-left');
+    //     boxOne.style.marginLeft = marginLeft;
+    //     boxOne.classList.remove('horizTranslate');    
+    //   }  
+    // }
   }
 
   render() {
     return (
       <Fragment>
-        <h1 className="landing-h1">Sock it to me!</h1>
-        <button type="button" className="landing-button" onClick={this.showAuthForm}>Log in as host</button>
+        <div id="wrapper">
+          <div className="landing-wrapper">
+            <header>
+              <h1 className="landing-h1" id="landing-h1-one">Sock it</h1>
+              <h1 className="landing-h1" id="landing-h1-two">to Me!</h1>
+              <h2 className="landing-h2">Play games, <span className="secondary-color">learn</span></h2>
+            </header>
+            <button type="button" id="host-game-button" className="landing-button" onClick={this.showAuthForm}>Host a Game</button>
+            <br />
+            <Link to={{ pathname: '/joinroom' }}>
+              <button type="button" className="landing-button" onClick={this.joinRoom}>Join a Room</button>
+            </Link>
+          </div>
 
-        <Link to={{
-          pathname: '/joinroom',
-        }}>
-          <button type="button" className="landing-button">Join room as player</button>
-        </Link>
+          <AuthForm
+            redirect={this.redirect} login={this.props.signin} register={this.props.signup} />
 
-        {renderIf(this.state.showAuth, <AuthForm
-          redirect={this.redirect} login={this.props.signin} register={this.props.signup} />)}
+          {renderIf(this.state.joinRoomRedirect, <Redirect to="/joinroom" />)}
+
+        </div>
       </Fragment>
     );
   }

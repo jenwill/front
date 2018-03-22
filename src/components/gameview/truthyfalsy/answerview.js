@@ -10,7 +10,9 @@ class TruthyFalsyAnswerView extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.children}
+        <div id="truthyfalsy-answerview">
+          {this.props.children}
+        </div>
       </Fragment>
     );
   }
