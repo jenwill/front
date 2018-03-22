@@ -19,7 +19,6 @@ const answerCorrect = new Howl({
   loop: false,
 });
 
-// we need to check for a roomCode props, or else redirect client to landing
 class GameView extends Component {
   constructor(props) {
     super(props);
@@ -263,7 +262,7 @@ class GameView extends Component {
 
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
           {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
-          <button onClick={this.handleMute}>mute</button>
+          {renderIf(this.isHost, <button className="mute-button" onClick={this.handleMute}>Mute Sounds</button>)}
 
         </div>
       </Fragment>
@@ -275,7 +274,7 @@ let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
   game: state.game,
-  backgroundSound: state.backgroundSound
+  backgroundSound: state.backgroundSound,
 });
 
 let mapDispatchToProps = dispatch => ({

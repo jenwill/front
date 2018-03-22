@@ -51,7 +51,6 @@ body {
     background: $background-color;
     color: $primary-color;
     text-align: center;
-    padding-top: 3em;
 }
 
 @media only screen and (max-width: 321px) and (orientation: portrait) {
@@ -82,6 +81,10 @@ body {
   .rotate-phone {
       display: block;
   }
+
+  .rotate-phone-image {
+      object-fit: contain;
+  }
 }
 
 #wrapper {
@@ -108,13 +111,6 @@ h1 {
 h2 {
     font-size: 0.8em;
     margin-bottom: 0.3em;
-}
-
-a {
-    color: $link-color;
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: 900;
 }
 
 .center {
