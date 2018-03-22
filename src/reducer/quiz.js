@@ -11,6 +11,8 @@ export default (state = [], {type, payload}) => {
   case 'QUIZ_CREATE':
     validateQuiz(payload);
     return [payload, ...state];
+  case 'QUIZ_FETCH':
+    return payload;
 
   default:
     return state;
