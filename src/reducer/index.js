@@ -3,8 +3,9 @@ import room from './room';
 import token from './auth';
 import quizzes from './quiz';
 import socket from './socket';
+import game from './game';
 import profile from './profile';
 
 export default combineReducers({
-  room, socket, token, quizzes, profile,
+  room, socket, token, quizzes, profile, game,
 });

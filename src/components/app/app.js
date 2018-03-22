@@ -10,6 +10,7 @@ import CreateQuiz from '../createquiz/createquiz';
 import WaitingRoom from '../waitingroom/waitingroom';
 import GameView from '../gameview/gameview';
 import JoinRoom from '../joinroom/joinroom';
+import Disconnected from '../errorview/disconnected';
 
 const store = createStore();
 
@@ -29,18 +30,6 @@ class App extends Component {
   }
 
   render() {
-    const waitingRoomComponent = props => {
-      return (
-        <WaitingRoom socket={this.getState().socket} />
-      );
-    };
-
-    const landingComponent = props => {
-      return (
-        <Landing socket={this.getState().socket} />
-      );
-    };
-
     return (
       <Fragment>
         <Provider store={store}>
@@ -54,6 +43,7 @@ class App extends Component {
                 <Route exact path="/createquiz" component={CreateQuiz} />
                 <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
                 <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
+                <Route exact path="/error/disconnected" component={() => store.getState().socket ? <Disconnected /> : <Redirect to="/" />} />
               </Fragment>
             </div>
           </BrowserRouter>
@@ -62,6 +52,5 @@ class App extends Component {
     );
   }
 }
-
 
 export default App;

@@ -4,6 +4,7 @@ import { renderIf } from '../../lib/utils';
 import GameView from '../gameview/gameview';
 import { connect } from 'react-redux';
 import * as roomActions from '../../action/room-action';
+import * as socketActions from '../../action/socket-action';
 
 class WaitingRoom extends Component {
   constructor(props) {
@@ -17,6 +18,8 @@ class WaitingRoom extends Component {
     this.state = {
       numPlayers: 0,
       playerNames: [],
+      redirectToGameView: false,
+      redirectToErrorView: false,
     };
   }
 
@@ -29,7 +32,7 @@ class WaitingRoom extends Component {
       // receiving a room w/code back from back end
       this.socket.on('SEND_ROOM', data => { 
         data = JSON.parse(data);
-        let {roomCode, game, maxPlayers} = data;
+        let {roomCode, game, maxPlayers, roomHost} = data;
 
         this.props.setRoom({
           code: roomCode,
@@ -37,40 +40,65 @@ class WaitingRoom extends Component {
           instance: this.instance,
           isHost: this.isHost,
           maxPlayers: maxPlayers,
+          roomHost: roomHost,
         });
+
+        this.socket.room = roomCode;
+        let socket = this.socket;
+
+        this.props.setSocket(socket);
 
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
-    else console.log('is not host');
+    else console.log('Is not host');
 
     // update number of players in waiting room
-    this.socket.on('PLAYER_JOINED', (num, names) => {
-      this.setState({ 
-        numPlayers: num, 
+    this.socket.on('TRACK_PLAYERS', (num, names) => {
+      this.setState({
+        numPlayers: num,
         playerNames: names,
       });
     });
+
+    // listens for when host clicks start game, redirects players to gameview
+    this.socket.on('REDIRECT', path => {
+      this.setState({ redirectToGameView: true });
+    });
+
+    // if the host disconnects, redirects to errorview
+    this.socket.on('REDIRECT_DISCONNECT', () => {
+      this.setState({ redirectToErrorView: true });
+    });
   }
+
+  // componentWillUnmount() {
+  //   this.socket.emit('LEAVE_ROOM', this.props.room.code);
+  // }
 
   render() {
     return (
       <Fragment>
         <h1>waiting room: {this.props.room.game}</h1>
 
+        Room Code: {this.props.room.code}<br />
         Players in Room: {this.state.numPlayers}<br />
-        Players: {this.state.playerNames.join(', ')}
+        Max Players: {this.props.room.maxPlayers}<br />
+        Players: {renderIf(this.state.numPlayers === 0, 'none yet!')} {this.state.playerNames.join(', ')}
         <br />
-        {renderIf(this.isHost, <Link to={{
+        {renderIf(this.isHost && this.state.numPlayers > 0, <Link to={{
           pathname: '/gameview',
-          game: this.game,
-          instance: this.instance,
-          isHost: this.isHost,
-          roomCode: this.props.room.code,
-          socket: this.socket,
+          // socket: this.socket,
+          // game: this.game,
+          // instance: this.instance,
+          // isHost: this.isHost,
+          // roomCode: this.props.room.code,
         }}>
           <button type="button" className="startgame-button" id="start-game">Start Game</button>
         </Link>)}
+
+        {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
+        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
       </Fragment>
     );
   }
@@ -82,6 +110,7 @@ let mapStateToProps = state => ({
 });
 let mapDispatchToProps = dispatch => ({
   setRoom: room => dispatch(roomActions.roomSet(room)),
+  setSocket: socket => dispatch(socketActions.socketSet(socket)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingRoom);
