@@ -27,6 +27,7 @@ class App extends Component {
     localStorage.signUpError = false;
     // if (localStorage.token)
     //   store.dispatch({ type: 'TOKEN_SET', payload: localStorage.token });
+
   }
 
   render() {
