@@ -6,9 +6,10 @@ $background-color: #fff;
 $primary-color: #00a9c4;
 $secondary-color: #ffa205;
 $tertiary-color: #ffd284;
-$link-color: #00a9c4;
-$hover-color: #00a9c4;
+$link-color: #f98500;
+$hover-color: #ffa205;
 $button-hover-color: #fff8f4;
+$shadow-color: #00a1ba;
 $invalid-color: #c60101;
 $valid-color: #42991a;
 
@@ -39,6 +40,50 @@ body {
     letter-spacing: 0.07em;
 }
 
+.rotate-phone {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    background: $background-color;
+    color: $primary-color;
+    text-align: center;
+    padding-top: 3em;
+}
+
+@media only screen and (max-width: 321px) and (orientation: portrait) {
+  body {
+    font-size: 0.87em;
+  }
+}
+
+@media only screen and (min-width: 400px) and (orientation: portrait) {
+  body {
+    font-size: 1.15em;
+  }
+}
+
+@media only screen and (min-width: 600px) and (orientation: portrait) {
+  body {
+    font-size: 1.4em;
+  }
+}
+
+@media only screen and (min-width: 800px) and (orientation: portrait) {
+  body {
+    font-size: 1.6em;
+  }
+}
+
+@media only screen and (max-width: 500px) and (orientation: landscape) {
+  .rotate-phone {
+      display: block;
+  }
+}
+
 #wrapper {
     text-align: center;
     width: 100%;
@@ -46,7 +91,7 @@ body {
 
 header {
     width: 15em;
-    margin: 20vh auto 0.5em auto;
+    margin: 16vh auto 0.5em auto;
     text-align: center;
 }
 
@@ -140,4 +185,8 @@ table {
             border: 0;
         }
     }
+}
+
+img {
+    border: 0;
 }

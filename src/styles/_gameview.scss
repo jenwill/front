@@ -18,7 +18,7 @@
 
 .gameview-header {
     width: 15em;
-    margin: 15vh auto 0.5em auto;
+    margin: 12vh auto 0.5em auto;
     text-align: center;
     display: block;
 }   
@@ -36,17 +36,12 @@
     margin: 1.5em auto;
 }
 
-.truthyfalsy-button {
-    padding-top: 2.5em;
-    padding-bottom: 2.5em;
-}
-
 #mobile-answer-submitted-view, #player-answerview {
     margin: auto;
     margin-top: 3em;
     font-size: 0.8em;
     max-width: 90%;
-    text-align: left;
+    text-align: center;
 }
 
 #host-answer-view {
@@ -57,7 +52,7 @@
 .gameview-table {
     width: 100%;
     margin-bottom: 2em;
-
+    
     td {
         padding: 0.5em;
     }
@@ -67,6 +62,11 @@
     text-align: left;
     width: 4em;
     border: solid 1px $secondary-color;
+}
+
+.gameview-endgame {
+    font-size: 3em;
+    margin: 1em auto;
 }
 
 .gameview-table-answer {
@@ -84,7 +84,7 @@
     to { opacity: 1; }
 }
 
-.gameview-endgame {
-    font-size: 3em;
-    margin: 1em auto;
+.truthyfalsy-button {
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
 }

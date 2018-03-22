@@ -1,6 +1,7 @@
 .landing-wrapper {
     margin-bottom: 2em;
     margin-top: 0;
+    margin-left: 0;
 
     &.transition {
     -webkit-transition: 1s;
@@ -19,6 +20,15 @@
     transition: 1s;
     margin-top: 200%;
     }
+}
+
+@media only screen and (min-width: 900px) and (orientation: landscape) {
+  .landing-wrapper {
+      &.transition {
+        // margin-left: -20em;
+        margin-top: 3em;
+      }
+  }
 }
 
 #landing-h1-one {
@@ -40,13 +50,26 @@
 }
 
 @keyframes landing-h1-one {
-	from { margin-top: -100%; }
-	to { margin-top: 0; }
+    from { margin-top: -100%; }
+    to { margin-top: 0; }
 }
 
 @keyframes landing-h1-two {
 	from { margin-left: -100%; }
 	to { margin-left: 3em; }
+}
+
+@media only screen and (min-width: 900px) and (orientation: landscape) {
+    @keyframes landing-h1-one {
+        from {
+            margin-top: 0; 
+            margin-left: -100%; 
+        }
+        to { 
+            margin-top: 0;
+            margin-right: 3em; 
+        }
+    }
 }
 
 .landing-form {
@@ -65,5 +88,30 @@
     -o-transition: 1s;
     transition: 1s;
     opacity: 1;
+    }
+}
+
+@media only screen and (min-width: 900px) and (orientation: landscape) {
+    .landing-wrapper {
+        margin-top: 3em;
+        display: inline-block;
+        min-width: 20em;
+    }
+
+    .landing-form {
+        margin-left: 100%;
+        margin-top: 3em;
+        min-width: 20em;
+        display: inline-block;
+        opacity: 1;
+
+        &.transition {
+            -webkit-transition: 0s;
+            -moz-transition: 0s;
+            -ms-transition: 0s;
+            -o-transition: 0s;
+            transition: 0s;
+            margin-left: 0;
+        }
     }
 }

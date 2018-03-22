@@ -38,21 +38,9 @@ class Landing extends Component {
     hostButton.onclick = function() {
       landingWrapper.classList.add('transition');
       landingForm.classList.add('transition');
+      landingForm.classList.add('transitiontwo');
     };
     hostButton.click();
-    // document.getElementsByClassName('toggleButton')[0].onclick = function() {
-    //   if(this.innerHTML === 'Play') 
-    //   { 
-    //     this.innerHTML = 'Pause';
-    //     boxOne.classList.add('horizTranslate');
-    //   } else {
-    //     this.innerHTML = 'Play';
-    //     var computedStyle = window.getComputedStyle(boxOne),
-    //         marginLeft = computedStyle.getPropertyValue('margin-left');
-    //     boxOne.style.marginLeft = marginLeft;
-    //     boxOne.classList.remove('horizTranslate');    
-    //   }  
-    // }
   }
 
   render() {
@@ -60,7 +48,7 @@ class Landing extends Component {
       <Fragment>
         <div id="wrapper">
           <div className="landing-wrapper">
-            <header>
+            <header className="landing-header">
               <h1 className="landing-h1" id="landing-h1-one">Sock it</h1>
               <h1 className="landing-h1" id="landing-h1-two">to Me!</h1>
               <h2 className="landing-h2">Play games, <span className="secondary-color">learn</span></h2>
@@ -72,8 +60,10 @@ class Landing extends Component {
             </Link>
           </div>
 
+          {/* <div className="authform-wrapper"> */}
           <AuthForm
             redirect={this.redirect} login={this.props.signin} register={this.props.signup} />
+          {/* </div> */}
 
           {renderIf(this.state.joinRoomRedirect, <Redirect to="/joinroom" />)}
 
