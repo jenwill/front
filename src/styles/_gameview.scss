@@ -41,7 +41,7 @@
     padding-bottom: 2.5em;
 }
 
-#mobile-answer-submitted-view {
+#mobile-answer-submitted-view, #player-answerview {
     margin: auto;
     margin-top: 3em;
     font-size: 0.8em;
@@ -65,13 +65,15 @@
 
 .gameview-table-question {
     text-align: left;
+    width: 4em;
+    border: solid 1px $secondary-color;
 }
 
 .gameview-table-answer {
     text-align: right;
 }
 
-#truthyfalsy-answerview {
+.truthyfalsy-answerview {
     animation-name: truthyfalsy-answerview;
     animation-duration: 1s;
     margin-top: 2em;
@@ -80,4 +82,9 @@
 @keyframes truthyfalsy-answerview {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+.gameview-endgame {
+    font-size: 3em;
+    margin: 1em auto;
 }

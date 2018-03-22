@@ -95,7 +95,7 @@ class WaitingRoom extends Component {
                 <td className="right secondary-color">{this.props.room.code}</td>
               </tr>
               <tr>
-                <td className="left">Players in Room</td>
+                <td className="left"># Players</td>
                 <td className="right secondary-color">{this.state.numPlayers}</td>
               </tr>
               <tr>
@@ -104,7 +104,10 @@ class WaitingRoom extends Component {
               </tr>
               <tr>
                 <td className="left">Players</td>
-                <td className="right secondary-color">{renderIf(this.state.numPlayers === 0, 'None yet!')} {this.state.playerNames.join(', ')}</td>
+                <td className="right secondary-color"></td>
+              </tr>
+              <tr>
+                <td colSpan="2" className="left secondary-color">{renderIf(this.state.numPlayers === 0, 'None yet!')} {this.state.playerNames.join(', ')}</td>
               </tr>
             </tbody>
           </table>

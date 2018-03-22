@@ -6,10 +6,11 @@ $background-color: #fff;
 $primary-color: #00a9c4;
 $secondary-color: #ffa205;
 $tertiary-color: #ffd284;
-$link-color: #aaa;
+$link-color: #00a9c4;
 $hover-color: #00a9c4;
 $button-hover-color: #fff8f4;
 $invalid-color: #c60101;
+$valid-color: #42991a;
 
 %borders {
     border: solid 1px $primary-color;
@@ -104,6 +105,14 @@ a {
 
 .bold {
     font-weight: 900;
+}
+
+.invalid-color {
+    color: $invalid-color;
+}
+
+.valid-color {
+    color: $valid-color;
 }
 
 .submit {

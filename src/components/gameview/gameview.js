@@ -141,12 +141,14 @@ class GameView extends Component {
     this.incorrectResults = [];
     this.state.currentAnswerResults.forEach(result => {
       if (result.correct) {
-        this.correctResults = this.correctResults.concat([<span className="correct-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-correct">CORRECT</span></span>, <br />]);
+        this.correctResults = this.correctResults.concat([<span className="correct-result"><span className="bold"><strong>{result.nickname}</strong></span>: <span className="valid-color">CORRECT</span></span>, ' | ']);
       }
       else {
-        this.incorrectResults = this.incorrectResults.concat([<span className="incorrect-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-incorrect">INCORRECT</span></span>, <br />]);
+        this.incorrectResults = this.incorrectResults.concat([<span className="incorrect-result"><span className="bold"><strong>{result.nickname}</strong></span>: <span className="invalid-color">INCORRECT</span></span>, ' | ']);
       }
     });
+    if (!this.incorrectResults.length) this.correctResults.pop();
+    this.incorrectResults.pop();
     this.correctResults.map((el, i) => <span key={i}>{el}</span>);
     this.incorrectResults.map((el, i) => <span key={i}>{el}</span>);
 
@@ -161,8 +163,9 @@ class GameView extends Component {
     this.allResults = [];
     this.state.currentAnswerResults.sort((a, b) => b.score - a.score);
     this.state.currentAnswerResults.forEach(result => {
-      this.allResults = this.allResults.concat([<span className="endgame-result"><span className="endgame-result-nickname">{result.nickname}</span>: <span className="endgame-result-score">{result.score}</span></span>, <br />]);
+      this.allResults = this.allResults.concat([<span className="endgame-result"><span className="bold">{result.nickname}</span>: <span className="valid-color">{result.score}</span></span>, ' | ']);
     });
+    this.allResults.pop();
     this.allResults.map((el, i) => <span key={i}>{el}</span>);
 
     this.setState({
@@ -193,16 +196,16 @@ class GameView extends Component {
           </div>)}
 
 
-          {renderIf(this.state.answerPhase, <div id="host-answer-view">
+          {renderIf(this.state.answerPhase && this.isHost, <div id="host-answer-view">
             <table className="gameview-table">
               <tbody>
                 <tr>
-                  <td className="bold left gameview-table-question">Question:</td>
-                  <td><span className="secondary-color right gameview-table-answer">{this.state.currentQuestion}</span></td>
+                  <td className="bold left gameview-table-question">Question</td>
+                  <td className="secondary-color right gameview-table-answer"><span>{this.state.currentQuestion}</span></td>
                 </tr>
                 <tr>
-                  <td className="bold left gameview-table-question">Answer:</td>
-                  <td><span className="secondary-color right gameview-table-answer">{this.state.currentAnswer.toString()}</span></td>
+                  <td className="bold left gameview-table-question">Answer</td>
+                  <td className="secondary-color right gameview-table-answer"><span>{this.state.currentAnswer.toString()}</span></td>
                 </tr>
               </tbody>
             </table>
@@ -212,14 +215,16 @@ class GameView extends Component {
             </TruthyFalsyAnswerView>
           </div>)}
 
-          {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
+          {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answerview">Results are up! Look on the host screen.</div>)}
 
 
           {renderIf(this.state.endGame, <div id="host-endgame-view">
             <TruthyFalsyAnswerView>
-              <h3>End Game</h3>
-              <h5>You will be redirected after 20 seconds.</h5>
-              {this.state.allResults}
+              <h3 className="gameview-endgame invalid-color">End Game</h3>
+              <h5 className="secondary-color">You will be redirected after 20 seconds.</h5>
+              <div className="truthyfalsy-answerview">
+                {this.state.allResults}
+              </div>
             </TruthyFalsyAnswerView>
           </div>)}
 
