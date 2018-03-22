@@ -17,6 +17,7 @@ class WaitingRoom extends Component {
     console.log('waitingroom props', this.props);
     this.state = {
       numPlayers: 0,
+      roomCode: null,
       playerNames: [],
       redirectToGameView: false,
       redirectToErrorView: false,
@@ -42,6 +43,8 @@ class WaitingRoom extends Component {
           maxPlayers: maxPlayers,
           roomHost: roomHost,
         });
+
+        this.setState({roomCode: roomCode});
 
         this.socket.room = roomCode;
         let socket = this.socket;
