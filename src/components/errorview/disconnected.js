@@ -9,11 +9,16 @@ class Disconnected extends Component {
   render() {
     return (
       <Fragment>
-        <h1>Error!</h1>
+        <div className="center">
+          <h1>Error!</h1>
 
-        You have been disconnected from the game. <br /><br />
+          <br /><br />
+
+          <span className="secondary-color">You have been disconnected from the game.</span> 
+          <br /><br />
         
-        <Link to="/">Return to homepage.</Link>
+          <Link to="/">Return to homepage.</Link>
+        </div>
       </Fragment>
     );
   }

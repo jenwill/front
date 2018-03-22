@@ -11,6 +11,7 @@ import WaitingRoom from '../waitingroom/waitingroom';
 import GameView from '../gameview/gameview';
 import JoinRoom from '../joinroom/joinroom';
 import Disconnected from '../errorview/disconnected';
+import About from '../about/about';
 
 const store = createStore();
 
@@ -31,7 +32,7 @@ class App extends Component {
   }
 
   render() {
-    let rotateImg = `${__dirname}/rotate-phone.png`;
+    let rotateImg = `https://image.freepik.com/free-icon/rotating-phone-from-vertical-to-horizontal-position_318-54039.jpg`;
 
     return (
       <Fragment>
@@ -41,6 +42,7 @@ class App extends Component {
               <div className="rotate-phone"><img src={rotateImg} /></div>
               <Navbar />
               <Route exact path="/" component={Landing} />
+              <Route exact path ="/about" component={About} />
               <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />
               <Route exact path="/waitingroom" component={() => store.getState().socket ? <WaitingRoom /> : <Redirect to="/" />} />
               {/* <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} /> */}
