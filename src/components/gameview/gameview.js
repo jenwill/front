@@ -4,8 +4,20 @@ import { connect } from 'react-redux';
 import { renderIf } from '../../lib/utils';
 import TruthyFalsyPlayerView from './truthyfalsy/playerview';
 import TruthyFalsyAnswerView from './truthyfalsy/answerview';
-
 import * as gameActions from '../../action/game-action';
+import {Howl, Howler} from 'howler';
+import sounds from '../../lib/sounds';
+import soundActions from '../../action/sound-action';
+
+const endGameMusic = new Howl({
+  src: [sounds.endgamemusic],
+  loop: true,
+});
+
+const answerCorrect = new Howl({
+  src: [sounds.answercorrect],
+  loop: false,
+});
 
 // we need to check for a roomCode props, or else redirect client to landing
 class GameView extends Component {
@@ -18,6 +30,7 @@ class GameView extends Component {
     this.instance = this.props.room.instance;
     this.isHost = this.props.room.isHost;
     this.res = '';
+    this.backgroundSound = this.props.backgroundSound;
 
     this.state = { 
       questionPhase: null,
@@ -37,6 +50,7 @@ class GameView extends Component {
     this.tallyAnswers = this.tallyAnswers.bind(this);
     this.gameResults = this.gameResults.bind(this);
     this.endGameRedirect = this.endGameRedirect.bind(this);
+    this.handleMute = this.handleMute.bind(this);
   }
 
   componentDidMount() {
@@ -67,6 +81,7 @@ class GameView extends Component {
         incorrectResults: [],
       });
       console.log('___received a question from back end, question phase');
+      answerCorrect.play();
     });
 
     // if correct answer from player
@@ -128,6 +143,18 @@ class GameView extends Component {
     });
   }
 
+  handleMute() {
+    if (this.props.backgroundSound.backgroundSound) {
+      answerCorrect.mute(true);
+      endGameMusic.mute(true);
+      this.props.toggleSound(this.props.backgroundSound);
+    } else {
+      answerCorrect.mute(false);
+      endGameMusic.mute(false);
+      this.props.toggleSound(this.props.backgroundSound);
+    }
+  }
+
   startGame() {
     console.log('gameview: start game');
     let data = { 'game': this.game, 'instance': this.instance, 'roomCode': this.roomCode };
@@ -141,12 +168,14 @@ class GameView extends Component {
     this.incorrectResults = [];
     this.state.currentAnswerResults.forEach(result => {
       if (result.correct) {
-        this.correctResults = this.correctResults.concat([<span className="correct-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-correct">CORRECT</span></span>, <br />]);
+        this.correctResults = this.correctResults.concat([<span className="correct-result"><span className="bold"><strong>{result.nickname}</strong></span>: <span className="valid-color">CORRECT</span></span>, ' | ']);
       }
       else {
-        this.incorrectResults = this.incorrectResults.concat([<span className="incorrect-result"><span className="answer-result-nickname"><strong>{result.nickname}</strong></span>: <span className="answer-result-incorrect">INCORRECT</span></span>, <br />]);
+        this.incorrectResults = this.incorrectResults.concat([<span className="incorrect-result"><span className="bold"><strong>{result.nickname}</strong></span>: <span className="invalid-color">INCORRECT</span></span>, ' | ']);
       }
     });
+    if (!this.incorrectResults.length) this.correctResults.pop();
+    this.incorrectResults.pop();
     this.correctResults.map((el, i) => <span key={i}>{el}</span>);
     this.incorrectResults.map((el, i) => <span key={i}>{el}</span>);
 
@@ -157,12 +186,14 @@ class GameView extends Component {
   }
 
   gameResults() {
+    if(this.isHost) endGameMusic.play();
     console.log('__endgame');
     this.allResults = [];
     this.state.currentAnswerResults.sort((a, b) => b.score - a.score);
     this.state.currentAnswerResults.forEach(result => {
-      this.allResults = this.allResults.concat([<span className="endgame-result"><span className="endgame-result-nickname">{result.nickname}</span>: <span className="endgame-result-score">{result.score}</span></span>, <br />]);
+      this.allResults = this.allResults.concat([<span className="endgame-result"><span className="bold">{result.nickname}</span>: <span className="valid-color">{result.score}</span></span>, ' | ']);
     });
+    this.allResults.pop();
     this.allResults.map((el, i) => <span key={i}>{el}</span>);
 
     this.setState({
@@ -171,48 +202,70 @@ class GameView extends Component {
   }
 
   endGameRedirect() {
+    if(this.isHost) endGameMusic.stop();
     console.log('redirecting after end game');
     this.socket.emit('END_GAME', this.roomCode);
+    
   }
 
   render() {
     return (
       <Fragment>
-        <h1>{this.game}: {this.instance.name}</h1>
+        <div id="gameview-wrapper">
+          <div className="gameview-header">
+            <h1>{this.game}</h1>
+            <h2 className="secondary-color">{this.instance.name}</h2>
+          </div>
 
-        {renderIf(this.state.questionPhase, <div id="game-prompt">{this.state.currentQuestion}</div>)}
-
-
-        {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view"><TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} /></div>)}
-
-
-        {renderIf(this.state.answerPhase, <div id="host-answer-view">
-          <h2>Question: {this.state.currentQuestion}</h2>
-          <h2>Answer: {this.state.currentAnswer.toString()}</h2>
-          <TruthyFalsyAnswerView>
-            {this.state.correctResults}
-            {this.state.incorrectResults}
-          </TruthyFalsyAnswerView>
-        </div>)}
-
-        {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answer-view">Results are up! Look on the host screen.</div>)}
+          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">{this.state.currentQuestion}</div>)}
 
 
-        {renderIf(this.state.endGame, <div id="host-endgame-view">
-          <TruthyFalsyAnswerView>
-            <h3>End Game</h3>
-            <h5>You will be redirected after 20 seconds.</h5>
-            {this.state.allResults}
-          </TruthyFalsyAnswerView>
-        </div>)}
+          {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view">
+            <div id="game-prompt-playerview">{this.state.currentQuestion}</div>
+            <TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} />
+          </div>)}
 
 
-        {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
+          {renderIf(this.state.answerPhase && this.isHost, <div id="host-answer-view">
+            <table className="gameview-table">
+              <tbody>
+                <tr>
+                  <td className="bold left gameview-table-question">Question</td>
+                  <td className="secondary-color right gameview-table-answer"><span>{this.state.currentQuestion}</span></td>
+                </tr>
+                <tr>
+                  <td className="bold left gameview-table-question">Answer</td>
+                  <td className="secondary-color right gameview-table-answer"><span>{this.state.currentAnswer.toString()}</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <TruthyFalsyAnswerView>
+              {this.state.correctResults}
+              {this.state.incorrectResults}
+            </TruthyFalsyAnswerView>
+          </div>)}
+
+          {renderIf(this.state.answerPhase && !this.isHost, <div id="player-answerview">Results are up! Look on the host screen.</div>)}
 
 
-        {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
-        {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+          {renderIf(this.state.endGame, <div id="host-endgame-view">
+            <TruthyFalsyAnswerView>
+              <h3 className="gameview-endgame invalid-color">End Game</h3>
+              <h5 className="secondary-color">You will be redirected after 20 seconds.</h5>
+              <div className="truthyfalsy-answerview">
+                {this.state.allResults}
+              </div>
+            </TruthyFalsyAnswerView>
+          </div>)}
 
+
+          {renderIf(this.state.endGame && !this.isHost, <div id="player-endgame-view">The game has ended! Check the host screen for results.</div>)}
+
+          {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
+          {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
+          <button onClick={this.handleMute}>mute</button>
+
+        </div>
       </Fragment>
     );
   }
@@ -222,11 +275,13 @@ let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
   game: state.game,
+  backgroundSound: state.backgroundSound
 });
 
 let mapDispatchToProps = dispatch => ({
   setGame: game => dispatch(gameActions.gameSet(game)),
   deleteGame: () => dispatch(gameActions.gameDelete()),
+  toggleSound: backgroundSound => dispatch(soundActions.toggleSound(backgroundSound)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameView);

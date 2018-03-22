@@ -59,18 +59,24 @@ class JoinRoom extends Component {
   render() {
     return (
       <Fragment>
-        <h1>Join Room</h1>
+        <div id="joinroom-wrapper">
+          <header>
+            <h1 className="joinroom-h1">Join Room</h1>
+            <h2 className="joinroom-h2">Start <span className="secondary-color">playing</span></h2>
+          </header>
 
-        <form id="joinroom" className="joinroom-form" onSubmit={this.handleSubmit}>
-          <label className="joinroom-label">Room Code:</label>
-          <input name="code" className="joinroom-input" type="text" placeholder="Room Code" onChange={this.handleChange} required />
-          <label className="joinroom-label">Nickname:</label>
-          <input name="nickname" className="joinroom-input" type="text" placeholder="Name" onChange={this.handleChange} required />
-          <button className="joinroom-submit" type="submit">Join Room</button>
-        </form>
-        <div id="joinroom-error">{this.state.joinError}</div>
+          <form id="joinroom" className="joinroom-form" onSubmit={this.handleSubmit}>
+            <label className="joinroom-label">Room Code:</label>
+            <input name="code" className="joinroom-input" type="text" placeholder="Room Code" onChange={this.handleChange} required />
+            <label className="joinroom-label">Nickname:</label>
+            <input name="nickname" className="joinroom-input" type="text" placeholder="Name" onChange={this.handleChange} required />
+            <button className="joinroom-button" type="submit">Join Room</button>
+          </form>
 
-        {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
+          <div className="tooltip">{this.state.joinError}</div>
+
+          {renderIf(this.state.redirect, <Redirect to="/waitingroom" />)}
+        </div>
       </Fragment>
     );
   }

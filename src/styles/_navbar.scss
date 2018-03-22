@@ -1,0 +1,27 @@
+.navbar {
+    font-size: 1em;
+    width: 100%;
+    background: $primary-color;
+    color: $background-color;
+    padding: 1em 1.5em;
+    z-index: 2;
+    box-shadow: 0 1px $shadow-color;
+    fill: $primary-color;
+
+    ul {
+        list-style: none;
+        display: inline-block;
+    }
+
+    li {
+        margin: 0 1em;
+        display: inline-block;
+    }
+
+    img {
+        border: 0;
+        vertical-align: middle;
+        height: 90%;
+        width: auto;
+    }
+}
