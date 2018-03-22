@@ -76,8 +76,8 @@ module.exports = {
         exclude: /\.glyph.svg/,
         use: [
           {
-            loader: 'file-loader',
-            options: { name: 'audio/[name].[ext]' },
+            loader: 'url-loader',
+            options: { name: 'sounds/[name].[ext]' },
           },
         ],
       },
