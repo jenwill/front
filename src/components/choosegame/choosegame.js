@@ -46,14 +46,22 @@ class ChooseGame extends Component {
     // superagent request to get the quiz selected, pushes it to state, and then direct user to the waiting room page
     // using hard coded values for now
     let game = 'truthyfalsy';
-    let instance = {
-      name: 'Sample Quiz',
-      questions: [
-        { 'question': 'React is a JS framework.', 'answer': false },
-        { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-        { 'question': 'JavaScript is single-threaded.', 'answer': true },
-      ],
-    };
+    // let instance = {
+    //   name: 'Sample Quiz',
+    //   questions: [
+    //     { 'question': 'React is a JS framework.', 'answer': false },
+    //     { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
+    //     { 'question': 'JavaScript is single-threaded.', 'answer': true },
+    //   ],
+    // };
+
+    let selectedQuiz = document.getElementById('quiz-selector');
+    selectedQuiz = selectedQuiz.options[selectedQuiz.selectedIndex].value;
+
+    console.log('selectedQuiz', selectedQuiz);
+
+    let instance = this.props.quizzes.filter(quiz => quiz._id === selectedQuiz)[0];
+    console.log('game instance', instance);
 
     this.props.setRoom({
       game: game,
@@ -84,10 +92,10 @@ class ChooseGame extends Component {
         <div className="game-choice" id="truthyfalsygame">
           <img src="http://via.placeholder.com/200x200" />
           <h3>Title2</h3>
-          <select name="choose-quiz">
+          <select id="quiz-selector" name="choose-quiz">
             {/* <option value="value1">Value asdf</option> */}
             {this.props.quizzes ? this.props.quizzes.map(quiz =>
-              <option key={quiz._id} value={quiz.name}>{quiz.name}</option>) : undefined}
+              <option key={quiz._id} value={quiz._id}>{quiz.name}</option>) : undefined}
             {/* {console.log('profile props games', this.props.profile)}
             {console.log('quizzes', this.props.quizzes)} */}
             {/* {console.log('user quizzes', userQuizzes)} */}
