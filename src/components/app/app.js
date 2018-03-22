@@ -39,7 +39,8 @@ class App extends Component {
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />
                 <Route exact path="/waitingroom" component={() => store.getState().socket ? <WaitingRoom /> : <Redirect to="/" />} />
-                <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} />
+                {/* <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} /> */}
+                <Route exact path="/createquiz" component={CreateQuiz} />
                 <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
                 <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
                 <Route exact path="/error/disconnected" component={() => store.getState().socket ? <Disconnected /> : <Redirect to="/" />} />
