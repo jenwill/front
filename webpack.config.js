@@ -14,6 +14,11 @@ let plugins = [
   new ExtractPlugin({
     filename: 'bundle-[hash].css',
   }),
+  new HtmlPlugin({
+    title: 'HtmlWebpackPlugin example',
+    favicon: 'favicon.ico',
+    filename: 'favicon.html',
+  }),
   new HtmlPlugin({ template: `${__dirname}/src/public/index.html` }),
   new DefinePlugin({
     __DEBUG__: JSON.stringify(!production),
@@ -50,6 +55,14 @@ module.exports = {
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader'],
         }),
+      },
+      {
+        test: /favicon\.ico$/,
+        loader: 'url-loader',
+        query: { 
+          limit: 1,
+          name: '[name].[ext]',
+        },
       },
       {
         test: /\.(woff|woff2|ttf|eot|glyph|\.svg)$/,
