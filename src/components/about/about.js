@@ -14,7 +14,7 @@ class About extends Component {
           <h2 className="about-h2 secondary-color">For education and <span className="primary-color">for fun</span></h2>
 
           <p>
-            <span className="secondary-color bold">Sock it to Me</span> is a JavaScript-based website where you can play party games with your friends. You can create your own quizzes and prompts for each game, which can make it useful in a classroom or education environment.
+            <span className="secondary-color bold">Sock it to Me</span> is a JavaScript-based website where you can play party games with your friends. You can create your own quizzes and prompts for each game, which can make it useful in a classroom or educational environment.
           </p>
           <p>
             Our first model and only currently implemented game is called <span className="secondary-color bold">truthy falsy</span> and is a variation on a true/false quiz game. The goal is simple; get the most points by answering the true/false questions correctly!
