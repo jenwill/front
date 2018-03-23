@@ -10,36 +10,73 @@ import {renderIf} from '../../lib/utils';
 const Filter = require('bad-words');
 const filter = new Filter();
 filter.removeWords('hello');
+filter.removeWords('class');
+filter.removeWords('classes');
 
 class CreateQuiz extends Component {
   constructor(props) {
     super(props);
 
+    this.questionCount = 0;
+    this.questions = '';
+
     this.state = ({
       redirectToChooseGame: false,
+      questions: this.questions,
+      countError: '',
+      numChosen: false,
     });
+
+    this.addNewQuestions = this.addNewQuestions.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.returnStateQuestions = this.returnStateQuestions.bind(this);
+
   }
 
   handleSubmit(event) {
     let newGame = {
       name: filter.clean(document.getElementById('createquiz-name').value),
-      questions: [
-        new TFQuestion(filter.clean(document.getElementById('createquiz-questionone').value), document.querySelector('input[name="answer-one"]:checked').value),
-        new TFQuestion(filter.clean(document.getElementById('createquiz-questiontwo').value), document.querySelector('input[name="answer-two"]:checked').value),
-        new TFQuestion(filter.clean(document.getElementById('createquiz-questionthree').value), document.querySelector('input[name="answer-three"]:checked').value),
-        new TFQuestion(filter.clean(document.getElementById('createquiz-questionfour').value), document.querySelector('input[name="answer-four"]:checked').value),
-        new TFQuestion(filter.clean(document.getElementById('createquiz-questionfive').value), document.querySelector('input[name="answer-five"]:checked').value),
-      ],
+      questions: [],
     };
 
+    for (let i = 1; i <= this.questionCount; i++) {
+      let currentQuestion = new TFQuestion(filter.clean(document.getElementById(`createquiz-question${i}`).value), document.querySelector(`input[name="answer${i}"]:checked`).value);
+      newGame.questions.push(currentQuestion);
+    }
+
     let form = document.getElementsByClassName('createquiz-form')[0];
-    form.reset();
-
     this.props.createQuiz(newGame, this.props.token);
-
+    form.reset();
     this.setState({ redirectToChooseGame: true });
   }
+
+  addNewQuestions() {
+    let questionCount = document.getElementById('createquiz-num').value;
+    if (questionCount < 1 || questionCount > 20) {
+      this.setState({ countError: 'Number of questions must be between 1 and 20.' });
+      return;
+    }
+    this.questionCount = questionCount;
+
+    for (let i = 1; i <= this.questionCount; i++) {
+      this.questions += `
+        <input type="text" className="createquiz-input" id="createquiz-question${i}" placeholder="Question" required />
+        True <input type="radio" name="answer${i}" value="true" className="createquiz-radio" required />
+        False <input type="radio" name="answer${i}" value="false" className="createquiz-radio" required />
+        <br /><br />
+      `;
+    }
+
+    this.setState({
+      questions: this.questions,
+      numChosen: true,
+    });
+  }
+
+  returnStateQuestions() {
+    return { __html: this.state.questions};
+  }
+
 
   render() {
     return (
@@ -48,64 +85,24 @@ class CreateQuiz extends Component {
           <h1>CREATE QUIZ</h1>
           <h2 className="createquiz-h2">write your own quiz</h2>
           <form className="createquiz-form">
-            <fieldset>
-              <label className="createquiz-label">Quiz Name:</label>
-              <input className="createquiz-input" id="createquiz-name" type="text" placeholder="Quiz Name"/>
-            </fieldset>
+            <label className="createquiz-label">Quiz Name:</label>
+            <input type="text" className="createquiz-input" id="createquiz-name" placeholder="Quiz Name" required /><br />
 
-            <fieldset>
-              <label className="createquiz-label">Question:</label>
-              <input className="createquiz-input" id="createquiz-questionone" type="text" placeholder="Question One"/>
+            {renderIf(!this.state.numChosen, <div>
+              <label className="createquiz-label"># Questions:</label><br />
+              <input type="number" className="createquiz-input" id="createquiz-num" placeholder="#" /> <button className="generatequestions-button" type="button" id="generatequestions" onClick={this.addNewQuestions}>Generate Questions</button>
+              <div className="count-error secondary-color">{this.state.countError}</div>
+            </div>)}
 
-              <label className="createquiz-label">Answer:</label><br />
-              <label className="createquiz-label">True</label>
-              <input type="radio" name="answer-one" value="true" className="createquiz-input" id="createquiz-answerone-true" placeholder="Answer One"/>
-              <label className="createquiz-label">False</label>
-              <input type="radio" name="answer-one" value="false" className="createquiz-input" id="createquiz-answerone-false" placeholder="Answer One"/>
-            </fieldset>
-            <fieldset>
-              <label className="createquiz-label">Question:</label>
-              <input className="createquiz-input" id="createquiz-questiontwo" type="text" placeholder="Question Two"/>
+            <div dangerouslySetInnerHTML={this.returnStateQuestions()} />
 
-              <label className="createquiz-label">Answer:</label><br />
-              <label className="createquiz-label">True</label>
-              <input type="radio" name="answer-two" value="true" className="createquiz-input" id="createquiz-answertwo-true" placeholder="Answer Two"/>
-              <label className="createquiz-label">False</label>
-              <input type="radio" name="answer-two" value="false" className="createquiz-input" id="createquiz-answertwo-false" placeholder="Answer Two"/>
-            </fieldset>
-            <fieldset>
-              <label className="createquiz-label">Question:</label>
-              <input className="createquiz-input" id="createquiz-questionthree" type="text" placeholder="Question Three"/>
-
-              <label className="createquiz-label">Answer:</label><br />
-              <label className="createquiz-label">True</label>
-              <input type="radio" name="answer-three" value="true" className="createquiz-input" id="createquiz-answerthree-true" placeholder="Answer Three"/>
-              <label className="createquiz-label">False</label>
-              <input type="radio" name="answer-three" value="false" className="createquiz-input" id="createquiz-answerthree-false" placeholder="Answer Three"/>
-            </fieldset>
-            <fieldset>
-              <label className="createquiz-label">Question:</label>
-              <input className="createquiz-input" id="createquiz-questionfour" type="text" placeholder="Question Four"/>
-
-              <label className="createquiz-label">Answer:</label><br />
-              <label className="createquiz-label">True</label>
-              <input type="radio" name="answer-four" value="true" className="createquiz-input" id="createquiz-answerfour-true" placeholder="Answer Four"/>
-              <label className="createquiz-label">False</label>
-              <input type="radio" name="answer-four" value="false" className="createquiz-input" id="createquiz-answerfour-false" placeholder="Answer Four"/>
-            </fieldset>
-            <fieldset>
-              <label className="createquiz-label">Question:</label>
-              <input className="createquiz-input" id="createquiz-questionfive" type="text" placeholder="Question Five"/>
-
-              <label className="createquiz-label">Answer:</label><br />
-              <label className="createquiz-label">True</label>
-              <input type="radio" name="answer-five" value="true" className="createquiz-input" id="createquiz-answerfive-true" placeholder="Answer Five"/>
-              <label className="createquiz-label">False</label>
-              <input type="radio" name="answer-five" value="false" className="createquiz-input" id="createquiz-answerfive-false" placeholder="Answer Five"/>
-            </fieldset>
-            <Link to={'/choosegame'}><button type="button">Back to Choose Game</button></Link>
             <br />
-            <button type="button" onClick={this.handleSubmit}>Save Quiz</button>
+            {renderIf(this.state.numChosen, 
+              <button className="createquiz-button" type="button" onClick={this.handleSubmit}>Save Quiz</button>
+            )}
+            <br />
+            <Link to={'/choosegame'}><button className="createquiz-button" type="button">Go Back</button></Link>
+
           </form>
 
           {renderIf(this.state.redirectToChooseGame, <Redirect to="/choosegame" />)}

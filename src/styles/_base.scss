@@ -1,7 +1,7 @@
 // ========================= BASE ========================= //
 
 $primary-font: Comfortaa, sans-serif;
-$secondary-font: Acme, sans-serif;
+$secondary-font: Raleway, sans-serif;
 $background-color: #fff;
 $primary-color: #00a9c4;
 $secondary-color: #ffa205;
@@ -39,18 +39,18 @@ body {
     letter-spacing: 0.07em;
 }
 
-.rotate-phone {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 100;
-    background: $background-color;
-    color: $primary-color;
-    text-align: center;
-}
+// .rotate-phone {
+//     display: none;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     bottom: 0;
+//     right: 0;
+//     z-index: 100;
+//     background: $background-color;
+//     color: $primary-color;
+//     text-align: center;
+// }
 
 @media only screen and (max-width: 321px) and (orientation: portrait) {
   body {
@@ -77,15 +77,15 @@ body {
 }
 
 
-.rotate-phone-image {
-    object-fit: contain;
-}
+// .rotate-phone-image {
+//     object-fit: contain;
+// }
 
-@media only screen and (max-width: 500px) and (orientation: landscape) {
-  .rotate-phone {
-      display: block;
-  }
-}
+// @media only screen and (max-width: 500px) and (orientation: landscape) {
+//   .rotate-phone {
+//       display: block;
+//   }
+// }
 
 #wrapper {
     text-align: center;
@@ -168,6 +168,10 @@ a {
 
 .button-hover-color {
     color: $button-hover-color;
+}
+
+.small-font {
+    font-size: 0.8em;
 }
 
 .submit {

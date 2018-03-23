@@ -72,10 +72,10 @@ class JoinRoom extends Component {
           </header>
 
           <form id="joinroom" className="joinroom-form" onSubmit={this.handleSubmit}>
-            <label className="joinroom-label">Room Code:</label>
-            <input name="code" className="joinroom-input" type="text" placeholder="Room Code" onChange={this.handleChange} required />
-            <label className="joinroom-label">Nickname:</label>
-            <input name="nickname" className="joinroom-input" type="text" placeholder="Name" onChange={this.handleChange} required />
+            <div className="joinroom-div">Room Code:</div>
+            <input name="code" className="joinroom-input" id="joinroom-roomcode" type="text" placeholder="Room Code" onChange={this.handleChange} required />
+            <div className="joinroom-div">Nickname:</div>
+            <input name="nickname" className="joinroom-input" id="joinroom-nickname" type="text" placeholder="Name" onChange={this.handleChange} required />
             <button className="joinroom-button" type="submit">Join Room</button>
           </form>
 

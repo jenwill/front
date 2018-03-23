@@ -9,12 +9,6 @@ import * as soundActions from '../../action/sound-action';
 import {Howl, Howler} from 'howler';
 import sounds from '../../lib/sounds';
 
-const lobbymusic = new Howl({
-  src: [sounds.lobbymusic],
-  loop: true,
-});
-
-
 class WaitingRoom extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +17,11 @@ class WaitingRoom extends Component {
     this.instance = this.props.room.instance;
     this.isHost = this.props.room.isHost;
     this.backgroundSound = this.props.backgroundSound;
+
+    this.lobbymusic = new Howl({
+      src: [sounds.lobbymusic],
+      loop: true,
+    });
 
     this.state = {
       numPlayers: 0,
@@ -37,7 +36,7 @@ class WaitingRoom extends Component {
 
   componentWillUnmount() {
     if(this.isHost) {
-      lobbymusic.stop();
+      this.lobbymusic.stop();
     }
   }
 
@@ -48,7 +47,7 @@ class WaitingRoom extends Component {
       if(this.props.backgroundSound === null) {
         this.props.setSound(this.props.backgroundSound);
       } 
-      lobbymusic.play();
+      this.lobbymusic.play();
 
       // creating a room
       this.socket.emit('CREATE_ROOM', this.game, this.instance); 
@@ -99,10 +98,10 @@ class WaitingRoom extends Component {
 
   handleMute() {
     if (this.props.backgroundSound.backgroundSound) {
-      lobbymusic.mute(true);
+      this.lobbymusic.mute(true);
       this.props.toggleSound(this.props.backgroundSound);
     } else {
-      lobbymusic.mute(false);
+      this.lobbymusic.mute(false);
       this.props.toggleSound(this.props.backgroundSound);
     }
   }

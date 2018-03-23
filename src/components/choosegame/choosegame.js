@@ -58,7 +58,10 @@ class ChooseGame extends Component {
               <button type="button" className="choosegame-button submit">Create Quiz</button>
             </Link>
             <div className="game-choice" id="truthyfalsygame">
-              <div className="game-name">Truthy <span className="button-hover-color">Falsy</span></div>
+              <div className="game-name">
+                Truthy Falsy
+                <div className="button-hover-color game-description">Answer questions, get points.</div>
+              </div>
               <div className="select">
                 <select id="quiz-selector">
                   <option disabled selected hidden>click to select quiz...</option>

@@ -50,28 +50,33 @@ button {
     -moz-appearance: none;
     appearance: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
+    // -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
 
 form {
+
     label {
         font-size: 1em;
+        display: inline-block;
     }
 
-    input[type=text], input[type=password], input[type=email] {
-        @extend %formelements;
-        background: $background-color;
-        display: block;
-        margin: 0.1em auto 0.5em auto;
-        min-width: 12em;
-        max-width: 16em;
-        width: 80%;
-
+    input {
         &:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px white inset;
             -webkit-text-fill-color: $secondary-color;
+        }
+
+        &[type=text], &[type=password], &[type=email], &[type=number] {
+            @extend %formelements;
+            background: $background-color;
+            display: block;
+            margin: 0.1em auto 0.5em auto;
+            min-width: 12em;
+            max-width: 16em;
+            width: 80%;
+            text-transform: none;
         }
 
         &::placeholder {
@@ -84,10 +89,6 @@ form {
 
         &:required {
             box-shadow: none;
-        }
-
-        &[type=text] {
-            text-transform: uppercase;
         }
     }
 }
