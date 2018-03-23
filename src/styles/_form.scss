@@ -50,7 +50,7 @@ button {
     -moz-appearance: none;
     appearance: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
+    // -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
@@ -61,7 +61,7 @@ form {
         font-size: 1em;
         display: inline-block;
     }
-    
+
     input {
         &:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px white inset;
