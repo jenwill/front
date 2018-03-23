@@ -89,7 +89,7 @@ export default class AuthForm extends React.Component {
     return (
       <React.Fragment>
         <form className="landing-form" onSubmit={this.handleRegister} method="post">
-          <label className="landing-label">Email</label>
+          <div className="landing-div">Email</div>
           <input
             className="landing-input"
             type="email"
@@ -97,7 +97,7 @@ export default class AuthForm extends React.Component {
             placeholder="email"
             value={this.state.username}
             onChange={this.handleChange} required />          
-          <label className="landing-label">Password</label>
+          <div className="landing-div">Password</div>
           <input
             className="landing-input"
             type="password"

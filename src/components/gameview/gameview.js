@@ -7,7 +7,7 @@ import TruthyFalsyAnswerView from './truthyfalsy/answerview';
 import * as gameActions from '../../action/game-action';
 import {Howl, Howler} from 'howler';
 import sounds from '../../lib/sounds';
-import soundActions from '../../action/sound-action';
+import * as soundActions from '../../action/sound-action';
 
 const endGameMusic = new Howl({
   src: [sounds.endgamemusic],
@@ -57,8 +57,6 @@ class GameView extends Component {
     // when the host clicks the start game button, redirects all players from waitingroom to gameview page also
     if (this.isHost) {
       console.log('isHost', this.props.room.nickname);
-      // console.log('PLAYER ID ARRAY', this.props.room.playerIDs);
-      // this.socket.emit('UPDATE_PLAYERARRAY', this.props.room.playerIDs, this.props.room.code);
       this.socket.emit('REDIRECT_PLAYERS', this.roomCode, '/gameview');
       this.startGame();
     }
@@ -204,7 +202,6 @@ class GameView extends Component {
     if(this.isHost) endGameMusic.stop();
     console.log('redirecting after end game');
     this.socket.emit('END_GAME', this.roomCode);
-    
   }
 
   render() {
