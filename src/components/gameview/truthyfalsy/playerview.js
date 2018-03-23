@@ -11,7 +11,6 @@ class TruthyFalsyPlayerView extends Component {
     this.instance = this.props.room.instance;
     this.answer = '';
     this.roomCode = this.props.room.code;
-    console.log('truthyfalsy mobileview props', this.props, this.answer);
     
     this.state = {
       questionAnswered: false,
@@ -30,14 +29,11 @@ class TruthyFalsyPlayerView extends Component {
       questionAnswered: true,
     });
 
-    console.log('handleSubmitAnswer', e.target.value);
     this.answer = e.target.value;
     if (this.answer === this.props.currentAnswer.toString()) {
-      console.log('right answer');
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', true, this.socket.id, this.roomCode);
     }
     else {
-      console.log('wrong answer');
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
     }
   }
@@ -50,6 +46,8 @@ class TruthyFalsyPlayerView extends Component {
             <button type="button" className="truthyfalsy-button submit" id="true" value="true" onClick={this.handleSubmitAnswer}>true</button>
             <button type="button" id="false" className="truthyfalsy-button submit" value="false" onClick={this.handleSubmitAnswer}>false</button>
           </div>)}
+
+        {renderIf(!this.state.questionAnswered, <div className="tf-question-progress-bar"><div className="tf-progress"></div></div>)}
 
         {renderIf(this.state.questionAnswered,
           <div id="mobile-answer-submitted-view" className="secondary-color">

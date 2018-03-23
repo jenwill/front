@@ -8,13 +8,11 @@ import { renderIf } from '../../lib/utils';
 class Landing extends Component {
   constructor(props) {
     super(props);
-    console.log('landing props', this.props);
 
     this.state = {
       showAuth: false,
     };
 
-    console.log('state', this.state);
     this.redirect = this.redirect.bind(this);
     this.showAuthForm = this.showAuthForm.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
@@ -60,10 +58,8 @@ class Landing extends Component {
             </Link>
           </div>
 
-          {/* <div className="authform-wrapper"> */}
           <AuthForm
             redirect={this.redirect} login={this.props.signin} register={this.props.signup} />
-          {/* </div> */}
 
           {renderIf(this.state.joinRoomRedirect, <Redirect to="/joinroom" />)}
 

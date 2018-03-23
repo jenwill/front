@@ -11,8 +11,6 @@ class ChooseGame extends Component {
   constructor(props) {
     super(props);
 
-    console.log('choosegame props', this.props);
-
     this.state = {
       'game': null,
       'instance': null,
@@ -29,39 +27,13 @@ class ChooseGame extends Component {
     this.props.fetchProfile(this.props.token);
   }
 
-  componentDid() {
-    let userQuizzes = this.props.quizzes.filter(quiz => {
-      if (this.props.profile.games.length > 0) {
-        console.log('yep');
-        if (this.props.profile.games.includes(quiz._id)) {
-          return quiz._id;
-        }
-      }
-    });
-
-    console.log(userQuizzes);
-  }
-
   getQuiz() {
-    // superagent request to get the quiz selected, pushes it to state, and then direct user to the waiting room page
-    // using hard coded values for now
     let game = 'truthyfalsy';
-    // let instance = {
-    //   name: 'Sample Quiz',
-    //   questions: [
-    //     { 'question': 'React is a JS framework.', 'answer': false },
-    //     { 'question': 'Node is based off the Chrome v8 engine.', 'answer': true },
-    //     { 'question': 'JavaScript is single-threaded.', 'answer': true },
-    //   ],
-    // };
 
     let selectedQuiz = document.getElementById('quiz-selector');
     selectedQuiz = selectedQuiz.options[selectedQuiz.selectedIndex].value;
 
-    console.log('selectedQuiz', selectedQuiz);
-
     let instance = this.props.quizzes.filter(quiz => quiz._id === selectedQuiz)[0];
-    console.log('game instance', instance);
 
     this.props.setRoom({
       game: game,
@@ -86,7 +58,7 @@ class ChooseGame extends Component {
               <button type="button" className="choosegame-button submit">Create Quiz</button>
             </Link>
             <div className="game-choice" id="truthyfalsygame">
-              <img className="choosegame-image" src="http://via.placeholder.com/250x250" />
+              <div className="game-name">Truthy <span className="button-hover-color">Falsy</span></div>
               <div className="select">
                 <select id="quiz-selector">
                   <option disabled selected hidden>click to select quiz...</option>

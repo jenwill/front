@@ -216,14 +216,16 @@ class GameView extends Component {
             <h2 className="secondary-color">{this.instance.name}</h2>
           </div>
 
-          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">{this.state.currentQuestion}</div>)}
+          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">
+            {this.state.currentQuestion}
+            <div className="tf-question-progress-bar"><div className="tf-progress"></div></div>
+          </div>)}
 
 
           {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view">
             <div id="game-prompt-playerview">{this.state.currentQuestion}</div>
             <TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} />
           </div>)}
-
 
           {renderIf(this.state.answerPhase && this.isHost, <div id="host-answer-view">
             <table className="gameview-table">
@@ -262,7 +264,7 @@ class GameView extends Component {
 
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
           {renderIf(this.state.redirectEndGame, <Redirect to="/" />)}
-          {renderIf(this.isHost, <button className="mute-button" onClick={this.handleMute}>Mute Sounds</button>)}
+          {renderIf(this.isHost, <a className="mute-button" onClick={this.handleMute}>Mute Sounds</a>)}
 
         </div>
       </Fragment>

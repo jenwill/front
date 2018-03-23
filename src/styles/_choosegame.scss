@@ -1,6 +1,6 @@
 #choosegame-wrapper {
     animation-name: choosegame-animation;
-    animation-duration: 1.5s;
+    animation-duration: 0.5s;
     text-align: center;
 }
 
@@ -34,4 +34,17 @@
     max-height: 16em;
     width: 80%;
     height: 80%;
+}
+
+.game-name {
+    border: solid 1px $secondary-color;
+    border-radius: 0.1em;
+    background: $secondary-color;
+    color: $background-color;
+    width: 250px;
+    height: 200px;
+    margin: 0 auto 1em auto;
+    font-size: 1.5em;
+    padding-top: 3em;
+    text-align: center;
 }

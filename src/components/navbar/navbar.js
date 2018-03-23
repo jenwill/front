@@ -12,7 +12,7 @@ class Navbar extends Component {
         <div className="navbar">
           <img src="http://svgur.com/i/5yf.svg" />
           <ul>
-            <li><Link to="/">Sockit</Link></li>
+            <li className="home-li"><Link to="/">Sockit</Link></li>
             <li><Link to="/about">About</Link></li>
           </ul>
         </div>

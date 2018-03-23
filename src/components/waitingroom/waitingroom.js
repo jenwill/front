@@ -24,7 +24,6 @@ class WaitingRoom extends Component {
     this.isHost = this.props.room.isHost;
     this.backgroundSound = this.props.backgroundSound;
 
-    console.log('waitingroom props', this.props);
     this.state = {
       numPlayers: 0,
       roomCode: null,
@@ -78,7 +77,6 @@ class WaitingRoom extends Component {
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
-    else console.log('Is not host');
 
     // update number of players in waiting room
     this.socket.on('TRACK_PLAYERS', (num, names) => {
@@ -159,7 +157,7 @@ class WaitingRoom extends Component {
           {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
 
-          {renderIf(this.isHost, <button className="mute-button" onClick={this.handleMute}>Mute Sounds</button>)}
+          {renderIf(this.isHost, <a className="mute-button" onClick={this.handleMute}>Mute Sounds</a>)}
 
 
         </div>

@@ -39,17 +39,17 @@
 
 .mute-button {
     position: absolute;
+    top: 0;
+    right: 0;
     background: $primary-color;
     color: $background-color;
     border: 0;
-    right: 0;
-    padding: 0.1em;
-    vertical-align: middle;
+    padding: 1em 1.5em 0 0;
     z-index: 5;
 
     &:hover {
         background: $primary-color;
-        color: tertiary-color;
+        color: $tertiary-color;
         border: 0;
     }
 
@@ -58,4 +58,21 @@
         color: $background-color;
         background: $primary-color;
     }
+}
+
+@media only screen and (max-width: 600px) {
+  .mute-button {
+      font-size: 0.8em;
+      padding: 1.3em 1em 0 0;
+      margin: 0;
+  }
+
+  input {
+      min-width: 0;
+  }
+
+  li {
+      font-size: 0.8em;
+      margin: 0 0.5em;
+  }
 }
