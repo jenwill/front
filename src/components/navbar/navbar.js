@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
+import logoPath from '../../public/images/socket.svg';
 
 class Navbar extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Navbar extends Component {
     return (
       <Fragment>
         <div className="navbar">
-          <img src="http://svgur.com/i/5yf.svg" />
+          <img src={logoPath} />
           <ul>
             <li className="home-li"><Link to="/">Sockit</Link></li>
             <li><Link to="/about">About</Link></li>

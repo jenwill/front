@@ -76,6 +76,7 @@ form {
             min-width: 12em;
             max-width: 16em;
             width: 80%;
+            text-transform: none;
         }
 
         &::placeholder {
@@ -89,12 +90,7 @@ form {
         &:required {
             box-shadow: none;
         }
-
-        &[type=text] {
-            text-transform: uppercase;
-        }
     }
-    
 }
 
 select {
