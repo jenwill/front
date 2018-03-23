@@ -21,7 +21,7 @@
     margin: 12vh auto 0.5em auto;
     text-align: center;
     display: block;
-}   
+}
 
 #game-prompt {
     margin-top: 1.5em;
@@ -107,17 +107,17 @@
 }
 
 .tf-progress {
+    animation-name: tf-progress;
+    animation-duration: 15s;
     font-size: 16px;
     width: 14em;
     height: 1.5em;
     padding: 0;
     background-color: $primary-color;
     margin-left: 0;
-    animation-name: tf-progress;
-    animation-duration: 15s;
 }
 
 @keyframes tf-progress {
-    from { margin-right: -100%; }
-    to { margin-right: 0; }
+    from { margin-left: 100%; }
+    to { margin-left: 0; }
 }
