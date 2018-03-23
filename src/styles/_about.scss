@@ -1,0 +1,28 @@
+.about-wrapper {
+    max-width: 90%;
+    margin: 1.5em auto 1em auto;
+}
+
+.about-h2 {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+}
+
+p {
+    margin: 1em 0;
+    text-align: justify;
+}
+
+@media only screen and (max-width: 600px) {
+  .about-wrapper {
+    max-width: 90%;
+    font-size: 0.9em;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .about-wrapper {
+    max-width: 95%;
+    font-size: 0.8em;
+  }
+}

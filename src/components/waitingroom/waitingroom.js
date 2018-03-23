@@ -5,6 +5,15 @@ import GameView from '../gameview/gameview';
 import { connect } from 'react-redux';
 import * as roomActions from '../../action/room-action';
 import * as socketActions from '../../action/socket-action';
+import * as soundActions from '../../action/sound-action';
+import {Howl, Howler} from 'howler';
+import sounds from '../../lib/sounds';
+
+const lobbymusic = new Howl({
+  src: [sounds.lobbymusic],
+  loop: true,
+});
+
 
 class WaitingRoom extends Component {
   constructor(props) {
@@ -13,8 +22,8 @@ class WaitingRoom extends Component {
     this.game = this.props.room.game;
     this.instance = this.props.room.instance;
     this.isHost = this.props.room.isHost;
+    this.backgroundSound = this.props.backgroundSound;
 
-    console.log('waitingroom props', this.props);
     this.state = {
       numPlayers: 0,
       roomCode: null,
@@ -22,11 +31,25 @@ class WaitingRoom extends Component {
       redirectToGameView: false,
       redirectToErrorView: false,
     };
+
+    this.handleMute = this.handleMute.bind(this);
+  }
+
+  componentWillUnmount() {
+    if(this.isHost) {
+      lobbymusic.stop();
+    }
   }
 
   componentWillMount() {
     // if isHost is true
     if (this.isHost) {
+      
+      if(this.props.backgroundSound === null) {
+        this.props.setSound(this.props.backgroundSound);
+      } 
+      lobbymusic.play();
+
       // creating a room
       this.socket.emit('CREATE_ROOM', this.game, this.instance); 
 
@@ -54,7 +77,6 @@ class WaitingRoom extends Component {
         console.log('__ROOM_CODE__', this.props.room.code);
       });
     }
-    else console.log('Is not host');
 
     // update number of players in waiting room
     this.socket.on('TRACK_PLAYERS', (num, names) => {
@@ -73,6 +95,16 @@ class WaitingRoom extends Component {
     this.socket.on('REDIRECT_DISCONNECT', () => {
       this.setState({ redirectToErrorView: true });
     });
+  }
+
+  handleMute() {
+    if (this.props.backgroundSound.backgroundSound) {
+      lobbymusic.mute(true);
+      this.props.toggleSound(this.props.backgroundSound);
+    } else {
+      lobbymusic.mute(false);
+      this.props.toggleSound(this.props.backgroundSound);
+    }
   }
 
   // componentWillUnmount() {
@@ -124,6 +156,10 @@ class WaitingRoom extends Component {
 
           {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
+
+          {renderIf(this.isHost, <a className="mute-button" onClick={this.handleMute}>Mute Sounds</a>)}
+
+
         </div>
       </Fragment>
     );
@@ -133,10 +169,13 @@ class WaitingRoom extends Component {
 let mapStateToProps = state => ({
   room: state.room,
   socket: state.socket,
+  backgroundSound: state.backgroundSound,
 });
 let mapDispatchToProps = dispatch => ({
   setRoom: room => dispatch(roomActions.roomSet(room)),
   setSocket: socket => dispatch(socketActions.socketSet(socket)),
+  toggleSound: backgroundSound => dispatch(soundActions.toggleSound(backgroundSound)),
+  setSound: backgroundSound => dispatch(soundActions.setSound(backgroundSound)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WaitingRoom);

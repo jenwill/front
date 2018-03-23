@@ -11,6 +11,7 @@ import WaitingRoom from '../waitingroom/waitingroom';
 import GameView from '../gameview/gameview';
 import JoinRoom from '../joinroom/joinroom';
 import Disconnected from '../errorview/disconnected';
+import About from '../about/about';
 
 const store = createStore();
 
@@ -27,23 +28,22 @@ class App extends Component {
     localStorage.signUpError = false;
     // if (localStorage.token)
     //   store.dispatch({ type: 'TOKEN_SET', payload: localStorage.token });
+
   }
 
   render() {
-    let rotateImg = `${__dirname}/rotate-phone.png`;
-
     return (
       <Fragment>
         <Provider store={store}>
           <BrowserRouter>
             <div id="app">
-              <div className="rotate-phone"><img src={rotateImg} /></div>
               <Navbar />
               <Route exact path="/" component={Landing} />
+              <Route exact path ="/about" component={About} />
               <Route exact path="/choosegame" component={() => store.getState().token ? <ChooseGame /> : <Redirect to="/" />} />
               <Route exact path="/waitingroom" component={() => store.getState().socket ? <WaitingRoom /> : <Redirect to="/" />} />
-              {/* <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} /> */}
               <Route exact path="/createquiz" component={CreateQuiz} />
+              {/* <Route exact path="/createquiz" component={() => store.getState().token ? <CreateQuiz /> : <Redirect to="/" />} /> */}
               <Route exact path="/joinroom" component={() => store.getState().socket ? <JoinRoom /> : <Redirect to="/" />}/>
               <Route exact path="/gameview" component={() => store.getState().socket ? <GameView /> : <Redirect to="/" />} />
               <Route exact path="/error/disconnected" component={() => store.getState().socket ? <Disconnected /> : <Redirect to="/" />} />

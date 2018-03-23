@@ -7,6 +7,7 @@ export const fetchProfile = profile => ({
 });
 
 export const getProfile = token => dispatch => {
+  /* istanbul ignore next */
   return superagent.get(`${__API_URL__}/api/v1/profile`)
     .set('Authorization', `Bearer ${token}`)
     .then(res => dispatch(fetchProfile(res.body)))
