@@ -60,18 +60,20 @@ form {
         font-size: 1em;
     }
 
-    input[type=text], input[type=password], input[type=email] {
-        @extend %formelements;
-        background: $background-color;
-        display: block;
-        margin: 0.1em auto 0.5em auto;
-        min-width: 12em;
-        max-width: 16em;
-        width: 80%;
-
+    input {
         &:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px white inset;
             -webkit-text-fill-color: $secondary-color;
+        }
+
+        &[type=text], &[type=password], &[type=email] {
+            @extend %formelements;
+            background: $background-color;
+            display: block;
+            margin: 0.1em auto 0.5em auto;
+            min-width: 12em;
+            max-width: 16em;
+            width: 80%;
         }
 
         &::placeholder {
@@ -90,6 +92,7 @@ form {
             text-transform: uppercase;
         }
     }
+    
 }
 
 select {

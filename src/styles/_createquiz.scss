@@ -9,11 +9,15 @@
     margin-bottom: 1.5em;
 }
 
-.createquiz-input {
+.createquiz-input[type=text] {
     margin-bottom: 1.5em;
     max-width: 50em;
     width: 30em;
     min-width: 14em;
+}
+
+input[type=radio] {
+    margin-right: 5em;
 }
 
 .createquiz-label {
