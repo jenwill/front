@@ -6,19 +6,18 @@ export const tokenSet = token => ({
 });
 
 export const tokenDelete = () => {
-//   delete localStorage.token;
   return {
     type: 'TOKEN_DELETE',
   };
 };
 
 export const signupRequest = user => dispatch => {
+  /* istanbul ignore next */
   return superagent.post(`${__API_URL__}/api/v1/register`)
     .send(user)
     .then(res => {
       dispatch(tokenSet(res.text));
       try {
-        // localStorage.setItem('token', res.text);
         localStorage.signInError = false;
         localStorage.signUpError = false;
       } catch (e) {
@@ -35,13 +34,13 @@ export const signupRequest = user => dispatch => {
 };
 
 export const signinRequest = user => dispatch => {
+  /* istanbul ignore next */
   return superagent.get(`${__API_URL__}/api/v1/login`)
     .auth(user.username, user.password)
     .then(res => {
       console.log('res', res);
       dispatch(tokenSet(res.text));
       try {
-        // localStorage.setItem('token', res.text);
         localStorage.signInError = false;
         localStorage.signUpError = false;
       } catch (e) {
