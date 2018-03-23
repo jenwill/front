@@ -9,7 +9,7 @@ class Disconnected extends Component {
   render() {
     return (
       <Fragment>
-        <div className="center">
+        <div className="center errorview">
           <h1>Error!</h1>
 
           <br /><br />

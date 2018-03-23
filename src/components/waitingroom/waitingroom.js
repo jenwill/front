@@ -159,7 +159,7 @@ class WaitingRoom extends Component {
           {renderIf(this.state.redirectToGameView, <Redirect to="/gameview" />)}
           {renderIf(this.state.redirectToErrorView, <Redirect to="/error/disconnected" />)}
 
-          {renderIf(this.isHost, <button className="mute-button" onClick={this.handleMute}>Mute Sounds</button>)}
+          {renderIf(this.isHost, <a className="mute-button" onClick={this.handleMute}>Mute Sounds</a>)}
 
 
         </div>

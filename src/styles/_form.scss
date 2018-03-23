@@ -45,12 +45,22 @@ button {
     user-select: none;
 }
 
+%boxes {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 form {
     label {
         font-size: 1em;
     }
 
-    input {
+    input[type=text], input[type=password], input[type=email] {
         @extend %formelements;
         background: $background-color;
         display: block;

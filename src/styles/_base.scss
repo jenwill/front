@@ -27,7 +27,6 @@ $valid-color: #42991a;
 html {
     height: 100%;
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 body {
@@ -113,6 +112,12 @@ h2 {
     margin-bottom: 0.3em;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .center {
     text-align: center;
 }
@@ -156,6 +161,10 @@ h2 {
     color: $valid-color;
 }
 
+.link-color {
+    color: $link-color;
+}
+
 .submit {
     display: block;
     margin: 1em auto;
@@ -185,4 +194,9 @@ table {
 
 img {
     border: 0;
+}
+
+.errorview {
+    max-width: 90%;
+    margin: 20vh auto 1em auto;
 }
