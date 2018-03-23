@@ -30,6 +30,13 @@
     text-align: center;
 }
 
+@media only screen and (max-width: 600px) {
+  #game-prompt {
+    font-size: 1.5em;
+    line-height: 1.5em;
+  }
+}
+
 #game-prompt-playerview {
     margin-top: 2em;
     font-size: 0.8em;
