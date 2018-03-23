@@ -205,30 +205,11 @@ Front end Directory
 
 ## About us
 
-* Jeremy Pearson: https://github.com/jpjazzy
-
-![Description](./src/public/images/jeremyavatar.png)
-
-Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience.    
-
-* Melanie Downing: https://github.com/sayanything830
-
-![Description](./src/public/images/melanieavatar.jpeg)
-
-
-* Ender Smith: https://github.com/EnderSmith
-
-![Description](./src/public/images/enderavatar.jpeg)
-
-
-* Dean Murphy: https://github.com/dmurphy90
-
-![Description](./src/public/images/deanavatar.jpeg)
-
-
-* Joy Hou: https://github.com/strawbee
-
-![Description](./src/public/images/joyavatar.jpeg)
+| Jeremy Pearson | Melanie Downing | Ender Smith | Dean Murphy | Joy Hou |
+|:------------------------------------------:|:--------------------------------------------------:|:------------------------------------------:|:---------------------------:|:------------------------------------:|
+| [GitHub jpjazzy](https://github.com/jpjazzy) | [GitHub sayanything830](https://github.com/sayanything830) | [GitHub EnderSmith](https://github.com/EnderSmith) | [GitHub dmuphy90](https://github.com/dmurphy90) | [GitHub strawbee](https://github.com/strawbee) |
+| ![Description](./src/public/images/jeremyavatar.png) | ![Description](./src/public/images/melanieavatar.jpeg) | ![Description](./src/public/images/enderavatar.jpeg) | ![Description](./src/public/images/deanavatar.jpeg) | ![Description](./src/public/images/joyavatar.jpeg) |
+| Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience. | Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience. | Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience. | Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience. | Javascript developer with a talent for writing clean and efficient code as working with teams. One of my greatest strengths is my passion for experimenting with and learning the newest technologies. I am interested in working for a company that allows me to showcase the skills I have learned as well as grow as a developer through teamwork and experience. |
 
 
 Special thanks and kudos to:
