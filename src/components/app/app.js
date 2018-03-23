@@ -32,14 +32,11 @@ class App extends Component {
   }
 
   render() {
-    let rotateImg = `https://image.freepik.com/free-icon/rotating-phone-from-vertical-to-horizontal-position_318-54039.jpg`;
-
     return (
       <Fragment>
         <Provider store={store}>
           <BrowserRouter>
             <div id="app">
-              <div className="rotate-phone"><img className="rotate-phone-image" src={rotateImg} /></div>
               <Navbar />
               <Route exact path="/" component={Landing} />
               <Route exact path ="/about" component={About} />
