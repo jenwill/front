@@ -13,7 +13,6 @@ filter.removeWords('hello');
 class JoinRoom extends Component {
   constructor(props) {
     super(props);
-    console.log('joinroom props', this.props);
     this.socket = this.props.socket;
 
     this.state = {
@@ -47,8 +46,6 @@ class JoinRoom extends Component {
     });
 
     this.socket.on('JOINED_ROOM', (game, instance, maxPlayers) => {
-      console.log('game, instance', game, instance, maxPlayers);
-
       let code = this.state.code.toUpperCase();
       let nickname = this.state.nickname.toUpperCase();
 

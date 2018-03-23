@@ -12,7 +12,6 @@ export default class AuthForm extends React.Component {
       signUpError: localStorage.signUpError,
     };
 
-    console.log('auth form props', this.props);
     this.handleChange = this.handleChange.bind(this);
     this.handleLogIn = this.handleLogIn.bind(this);
     this.handleRegister = this.handleRegister.bind(this);

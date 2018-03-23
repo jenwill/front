@@ -36,7 +36,6 @@ class CreateQuiz extends Component {
     let form = document.getElementsByClassName('createquiz-form')[0];
     form.reset();
 
-    console.log('new game:', newGame);
     this.props.createQuiz(newGame, this.props.token);
 
     this.setState({ redirectToChooseGame: true });

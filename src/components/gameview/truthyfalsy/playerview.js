@@ -11,7 +11,6 @@ class TruthyFalsyPlayerView extends Component {
     this.instance = this.props.room.instance;
     this.answer = '';
     this.roomCode = this.props.room.code;
-    console.log('truthyfalsy mobileview props', this.props, this.answer);
     
     this.state = {
       questionAnswered: false,
@@ -30,14 +29,11 @@ class TruthyFalsyPlayerView extends Component {
       questionAnswered: true,
     });
 
-    console.log('handleSubmitAnswer', e.target.value);
     this.answer = e.target.value;
     if (this.answer === this.props.currentAnswer.toString()) {
-      console.log('right answer');
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', true, this.socket.id, this.roomCode);
     }
     else {
-      console.log('wrong answer');
       this.socket.emit('TRUTHYFALSY_SEND_ANSWER', false, this.socket.id, this.roomCode);
     }
   }
