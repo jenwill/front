@@ -86,7 +86,7 @@ class ChooseGame extends Component {
               <button type="button" className="choosegame-button submit">Create Quiz</button>
             </Link>
             <div className="game-choice" id="truthyfalsygame">
-              <img className="choosegame-image" src="http://via.placeholder.com/250x250" />
+              <div className="game-name">Truthy <span className="button-hover-color">Falsy</span></div>
               <div className="select">
                 <select id="quiz-selector">
                   <option disabled selected hidden>click to select quiz...</option>

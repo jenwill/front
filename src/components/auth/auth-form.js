@@ -109,9 +109,10 @@ export default class AuthForm extends React.Component {
           <button id="login-button" className="submit" type="button" onClick={this.handleLogIn}>Log In</button>
           <button id="register-button" className="submit" type="submit">Register</button>
         </form>
-
-        <p>{renderIf(this.state.signInError === 'true', <span className="tooltip">Invalid login.</span>)}</p>
-        <p>{renderIf(this.state.signUpError === 'true', <span className="tooltip">Username is already taken.</span>)}</p>
+        <div className="center">
+          {renderIf(this.state.signInError === 'true', <span className="tooltip">Invalid login.</span>)}
+          {renderIf(this.state.signUpError === 'true', <span className="tooltip">Username is already taken.</span>)}
+        </div>
       </React.Fragment>
     );
   }

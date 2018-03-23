@@ -6,6 +6,11 @@ import superagent from 'superagent';
 import {saveQuizToDb} from '../../action/quiz-action';
 import {renderIf} from '../../lib/utils';
 
+// Filter
+const Filter = require('bad-words');
+const filter = new Filter();
+filter.removeWords('hello');
+
 class CreateQuiz extends Component {
   constructor(props) {
     super(props);
@@ -18,13 +23,13 @@ class CreateQuiz extends Component {
 
   handleSubmit(event) {
     let newGame = {
-      name: document.getElementById('createquiz-name').value,
+      name: filter.clean(document.getElementById('createquiz-name').value),
       questions: [
-        new TFQuestion(document.getElementById('createquiz-questionone').value, document.querySelector('input[name="answer-one"]:checked').value),
-        new TFQuestion(document.getElementById('createquiz-questiontwo').value, document.querySelector('input[name="answer-two"]:checked').value),
-        new TFQuestion(document.getElementById('createquiz-questionthree').value, document.querySelector('input[name="answer-three"]:checked').value),
-        new TFQuestion(document.getElementById('createquiz-questionfour').value, document.querySelector('input[name="answer-four"]:checked').value),
-        new TFQuestion(document.getElementById('createquiz-questionfive').value, document.querySelector('input[name="answer-five"]:checked').value),
+        new TFQuestion(filter.clean(document.getElementById('createquiz-questionone').value), document.querySelector('input[name="answer-one"]:checked').value),
+        new TFQuestion(filter.clean(document.getElementById('createquiz-questiontwo').value), document.querySelector('input[name="answer-two"]:checked').value),
+        new TFQuestion(filter.clean(document.getElementById('createquiz-questionthree').value), document.querySelector('input[name="answer-three"]:checked').value),
+        new TFQuestion(filter.clean(document.getElementById('createquiz-questionfour').value), document.querySelector('input[name="answer-four"]:checked').value),
+        new TFQuestion(filter.clean(document.getElementById('createquiz-questionfive').value), document.querySelector('input[name="answer-five"]:checked').value),
       ],
     };
 

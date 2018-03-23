@@ -5,7 +5,11 @@ import WaitingRoom from '../waitingroom/waitingroom';
 import { connect } from 'react-redux';
 import * as roomActions from '../../action/room-action';
 
-// enter the code... emit an event to back end to join the room and redirects to waiting room
+// Filter
+const Filter = require('bad-words');
+const filter = new Filter();
+filter.removeWords('hello');
+
 class JoinRoom extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +34,11 @@ class JoinRoom extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+
+    if (filter.clean(this.state.nickname) !== this.state.nickname) {
+      this.setState({ joinError: 'Your username is filtered.' });
+      return;
+    }
 
     this.socket.emit('JOIN_ROOM', this.state.code.toUpperCase(), this.state.nickname.toUpperCase());
 

@@ -216,16 +216,16 @@ class GameView extends Component {
             <h2 className="secondary-color">{this.instance.name}</h2>
           </div>
 
-          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">{this.state.currentQuestion}</div>)}
+          {renderIf(this.state.questionPhase && this.isHost, <div id="game-prompt">
+            {this.state.currentQuestion}
+            <div className="tf-question-progress-bar"><div className="tf-progress"></div></div>
+          </div>)}
 
 
           {renderIf(this.state.questionPhase && !this.isHost, <div id="game-mobile-view">
             <div id="game-prompt-playerview">{this.state.currentQuestion}</div>
             <TruthyFalsyPlayerView currentAnswer={this.state.currentAnswer} />
           </div>)}
-
-          {renderIf(this.state.questionPhase, <div className="tf-question-progress-bar"><div className="tf-progress"></div></div>)}
-
 
           {renderIf(this.state.answerPhase && this.isHost, <div id="host-answer-view">
             <table className="gameview-table">

@@ -51,6 +51,8 @@ class TruthyFalsyPlayerView extends Component {
             <button type="button" id="false" className="truthyfalsy-button submit" value="false" onClick={this.handleSubmitAnswer}>false</button>
           </div>)}
 
+        {renderIf(!this.state.questionAnswered, <div className="tf-question-progress-bar"><div className="tf-progress"></div></div>)}
+
         {renderIf(this.state.questionAnswered,
           <div id="mobile-answer-submitted-view" className="secondary-color">
             You have submitted your answer. Hang on tight and wait for the results!
