@@ -64,8 +64,7 @@ class ChooseGame extends Component {
               </div>
               <div className="select">
                 <select id="quiz-selector">
-                  <option disabled selected hidden>click to select quiz...</option>
-                  <option>Sample option</option>
+                  <option disabled selected>click to select quiz...</option>
                   {this.props.quizzes ? this.props.quizzes.map(quiz =>
                     <option key={quiz._id} value={quiz._id}>{quiz.name}</option>) : undefined}
                 </select>
